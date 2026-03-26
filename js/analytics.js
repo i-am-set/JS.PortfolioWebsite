@@ -1,5 +1,10 @@
 let hasInitialized = false;
 
+// If running locally, point to the server.js backend. Otherwise, use relative path.
+const API_BASE = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
+    ? 'http://localhost:3001'
+    : '';
+
 export default function init() {
     document.addEventListener('consentUpdated', handleConsentUpdate);
 }
@@ -21,7 +26,7 @@ function handleConsentUpdate(event) {
 
 async function incrementView() {
     try {
-        const response = await fetch('/api/views/increment', {
+        const response = await fetch(`${API_BASE}/api/views/increment`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -41,7 +46,7 @@ async function incrementView() {
 
 async function fetchViewCount() {
     try {
-        const response = await fetch('/api/views');
+        const response = await fetch(`${API_BASE}/api/views`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const data = await response.json();

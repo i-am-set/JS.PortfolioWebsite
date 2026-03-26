@@ -2,13 +2,18 @@ import { initProjects } from './projects.js';
 import { initSkills } from './skills.js';
 import { initExperience } from './experience.js';
 import initAnalytics from './analytics.js';
+import { initConsent } from './consent.js';
 
 async function initApp() {
     await initMeta();
     initProjects();
     initSkills();
     initExperience();
+
+    // Initialize Analytics FIRST so it is listening for the event
     initAnalytics();
+    // Initialize Consent SECOND so the event fires after the listener is ready
+    initConsent();
 
     setupSmoothScrolling();
     setupIntersectionObserver();
@@ -51,7 +56,6 @@ async function initMeta() {
             if (meta.links.github) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.github}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-150">GitHub</a>`);
             if (meta.links.linkedin) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.linkedin}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-150">LinkedIn</a>`);
 
-            // Email Copy to Clipboard Logic
             if (meta.links.email) {
                 footerLinksContainer.insertAdjacentHTML('beforeend', `<button id="copy-email-btn" data-email="${meta.links.email}" class="text-text-muted hover:text-primary transition-colors duration-150 cursor-pointer">Email</button>`);
 
@@ -81,12 +85,10 @@ function showToast(message) {
 
     container.appendChild(toast);
 
-    // Animate in
     requestAnimationFrame(() => {
         toast.classList.remove('translate-y-10', 'opacity-0');
     });
 
-    // Animate out and remove
     setTimeout(() => {
         toast.classList.add('translate-y-10', 'opacity-0');
         setTimeout(() => toast.remove(), 300);

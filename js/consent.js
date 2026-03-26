@@ -13,7 +13,6 @@ function setConsentCookie(prefs) {
     const value = encodeURIComponent(JSON.stringify(prefs));
     const date = new Date();
     date.setTime(date.getTime() + (180 * 24 * 60 * 60 * 1000));
-    // Note: Add 'Secure;' to this string in production HTTPS environments
     document.cookie = `${COOKIE_NAME}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Strict`;
 }
 
@@ -35,7 +34,7 @@ function showBanner() {
     container.insertAdjacentHTML('beforeend', `
         <div id="consent-banner" class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-md border-t border-secondary rounded-t-2xl p-4 md:p-6 z-50 translate-y-full transition-transform duration-500 ease-out flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
             <div class="text-sm text-text-muted max-w-3xl">
-                <p>We use cookies to ensure basic site functionality and to track page views. You can choose to opt-in to analytics. <a href="#privacy" class="text-primary hover:underline">Read more</a>.</p>
+                <p>This site uses cookies to ensure basic functionality and to track page views. You can choose to opt-in to analytics. <a href="#privacy" class="text-primary hover:underline">Read more</a>.</p>
             </div>
             <div class="flex flex-wrap gap-3 shrink-0">
                 <button id="cb-prefs" class="btn-ghost text-sm px-4 py-2">Preferences</button>
@@ -44,7 +43,7 @@ function showBanner() {
             </div>
         </div>
     `);
-    
+
     requestAnimationFrame(() => document.getElementById('consent-banner').classList.remove('translate-y-full'));
 
     document.getElementById('cb-accept').addEventListener('click', () => handleConsent({ necessary: true, analytics: true }));
@@ -89,7 +88,7 @@ function showModal() {
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h4 class="text-text-primary font-medium mb-1">Analytics</h4>
-                            <p class="text-sm text-text-muted">Allows us to count page visits anonymously using a self-hosted API.</p>
+                            <p class="text-sm text-text-muted">Allows the site to count page visits anonymously using a self-hosted API.</p>
                         </div>
                         <button id="cm-toggle-analytics" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary ${currentPrefs.analytics ? 'bg-primary' : 'bg-secondary'} shrink-0">
                             <span class="inline-block h-4 w-4 transform rounded-full bg-text-primary transition-transform duration-200 ${currentPrefs.analytics ? 'translate-x-6' : 'translate-x-1'}"></span>
@@ -102,10 +101,10 @@ function showModal() {
             </div>
         </div>
     `);
-    
+
     const modal = document.getElementById('consent-modal');
     const content = document.getElementById('consent-modal-content');
-    
+
     requestAnimationFrame(() => {
         modal.classList.remove('opacity-0');
         content.classList.remove('scale-95');
@@ -114,7 +113,7 @@ function showModal() {
     let tempAnalytics = currentPrefs.analytics;
     const toggleBtn = document.getElementById('cm-toggle-analytics');
     const toggleDot = toggleBtn.querySelector('span');
-    
+
     toggleBtn.addEventListener('click', () => {
         tempAnalytics = !tempAnalytics;
         if (tempAnalytics) {
@@ -144,7 +143,8 @@ function closeModal() {
     }
 }
 
-export default function init() {
+// Exported so main.js can control exactly when this runs
+export function initConsent() {
     const saved = getConsentCookie();
     if (saved) {
         currentPrefs = saved;
@@ -152,11 +152,7 @@ export default function init() {
     } else {
         showBanner();
     }
-    
-    // Wire up any button with the data-consent-preferences attribute to open the modal
+
     const prefBtns = document.querySelectorAll('[data-consent-preferences]');
     prefBtns.forEach(btn => btn.addEventListener('click', showModal));
 }
-
-// Auto-initialize when module loads
-init();
