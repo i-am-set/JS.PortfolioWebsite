@@ -15,7 +15,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
+    <!-- 1. Try to load the compiled CSS file -->
     <link href="./css/output.css" rel="stylesheet">
+
+    <!-- 2. BULLETPROOF FALLBACK: If output.css is missing, this guarantees styling works everywhere -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+            --color-background: #091413;
+            --color-surface: #112522;
+            --color-primary: #408A71;
+            --color-secondary: #285A48;
+            --color-accent: #B0E4CC;
+            --color-text-primary: #E8F5F0;
+            --color-text-muted: #8AB4A5;
+            --font-display: "Outfit", "Inter", system-ui, sans-serif;
+        }
+    </style>
 </head>
 <body style="background-color: #091413; color: #E8F5F0;" class="bg-background text-text-primary font-sans antialiased flex flex-col min-h-screen overflow-x-hidden selection:bg-primary selection:text-background">
 
@@ -156,7 +172,6 @@
 
     <div id="consent-container"></div>
 
-    <!-- Removed the standalone consent.js script tag. It is now imported directly by main.js to fix the race condition -->
     <script type="module" src="./js/main.js" defer></script>
 </body>
 </html>
