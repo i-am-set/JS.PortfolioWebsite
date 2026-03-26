@@ -10,14 +10,25 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const VIEWS_FILE = path.join(__dirname, 'views.json');
 
-const allowedOrigins = ['http://localhost', 'http://127.0.0.1:5500', process.env.DOMAIN || 'https://localhost'];
+// UPDATED: Explicitly allow your live domain
+const allowedOrigins = [
+    'http://localhost',
+    'http://127.0.0.1:5500',
+    'https://sethgran.my.id',
+    'http://sethgran.my.id'
+];
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) callback(null, true);
-        else callback(new Error('Not allowed by CORS'));
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
     }
 }));
+
 app.use(express.json());
 
 function getViews() {
