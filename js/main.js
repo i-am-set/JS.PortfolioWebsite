@@ -16,6 +16,7 @@ async function initApp() {
     setupSmoothScrolling();
     setupIntersectionObserver();
     setupMobileMenu();
+    setupParallax();
 }
 
 if (document.readyState === 'loading') {
@@ -51,11 +52,11 @@ async function initMeta() {
         const footerLinksContainer = document.getElementById('footer-links');
         if (footerLinksContainer && meta.links) {
             footerLinksContainer.innerHTML = '';
-            if (meta.links.github) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.github}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-150">GitHub</a>`);
-            if (meta.links.linkedin) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.linkedin}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-150">LinkedIn</a>`);
+            if (meta.links.github) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.github}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-300">GitHub</a>`);
+            if (meta.links.linkedin) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.linkedin}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-300">LinkedIn</a>`);
 
             if (meta.links.email) {
-                footerLinksContainer.insertAdjacentHTML('beforeend', `<button id="copy-email-btn" data-email="${meta.links.email}" class="text-text-muted hover:text-primary transition-colors duration-150 cursor-pointer">Email</button>`);
+                footerLinksContainer.insertAdjacentHTML('beforeend', `<button id="copy-email-btn" data-email="${meta.links.email}" class="text-text-muted hover:text-primary transition-colors duration-300 cursor-pointer">Email</button>`);
 
                 document.getElementById('copy-email-btn').addEventListener('click', function () {
                     const email = this.getAttribute('data-email');
@@ -78,7 +79,7 @@ function showToast(message) {
     if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = 'bg-primary text-background px-6 py-3 rounded-full shadow-lg font-medium text-sm transform translate-y-10 opacity-0 transition-all duration-300 ease-out';
+    toast.className = 'bg-primary/90 backdrop-blur-md border border-accent/20 text-background px-6 py-3 rounded-full shadow-[0_8px_30px_rgba(64,138,113,0.3)] font-medium text-sm transform translate-y-10 opacity-0 transition-all duration-300 ease-out';
     toast.textContent = message;
 
     container.appendChild(toast);
@@ -123,7 +124,7 @@ function setupSmoothScrolling() {
             const targetElement = document.getElementById(targetId);
 
             if (targetElement) {
-                const headerOffset = 80;
+                const headerOffset = 100;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -140,16 +141,46 @@ function setupIntersectionObserver() {
     const sections = document.querySelectorAll('section[data-page-section]');
     sections.forEach(section => section.classList.add('fade-in-section'));
 
-    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
 
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                // Reveal parent section
                 entry.target.classList.add('is-visible');
+
+                // Stagger reveal children elements
+                const staggerItems = entry.target.querySelectorAll('.stagger-item');
+                staggerItems.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.classList.add('is-visible');
+                    }, index * 150); // 150ms delay between each item
+                });
+
                 observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
     sections.forEach(section => observer.observe(section));
+}
+
+function setupParallax() {
+    const blobs = document.querySelectorAll('.parallax-blob');
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const scrolled = window.scrollY;
+                blobs.forEach((blob, index) => {
+                    // Alternate directions for blobs
+                    const speed = index % 2 === 0 ? 0.15 : -0.1;
+                    blob.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
 }

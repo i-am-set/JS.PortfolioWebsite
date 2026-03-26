@@ -33,31 +33,37 @@
         }
     </style>
 </head>
-<body style="background-color: #091413; color: #E8F5F0;" class="bg-background text-text-primary font-sans antialiased flex flex-col min-h-screen overflow-x-hidden selection:bg-primary selection:text-background">
+<body style="background-color: #091413; color: #E8F5F0;" class="bg-background text-text-primary font-sans antialiased flex flex-col min-h-screen overflow-x-hidden selection:bg-primary selection:text-background relative">
+
+    <!-- Ambient Background Blobs -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="parallax-blob absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-primary/10 blur-[100px] animate-blob mix-blend-screen"></div>
+        <div class="parallax-blob absolute top-[40%] right-[-10%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] rounded-full bg-accent/10 blur-[100px] animate-blob animation-delay-2000 mix-blend-screen"></div>
+    </div>
 
     <!-- Navigation -->
-    <header class="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-secondary z-50 transition-all duration-150">
+    <header class="fixed top-0 w-full glass-panel z-50 transition-all duration-300">
         <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="#" class="text-2xl font-display font-bold text-accent tracking-tight" id="nav-logo">
+            <a href="#" class="text-2xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary tracking-tight hover:opacity-80 transition-opacity" id="nav-logo">
                 <div class="h-8 w-12 bg-surface animate-pulse rounded"></div>
             </a>
             <nav class="hidden md:flex gap-8 font-medium text-text-muted">
-                <a href="#hero" class="hover:text-primary transition-colors duration-150">About</a>
-                <a href="#projects" class="hover:text-primary transition-colors duration-150">Projects</a>
-                <a href="#skills" class="hover:text-primary transition-colors duration-150">Skills</a>
-                <a href="#experience" class="hover:text-primary transition-colors duration-150">Experience</a>
-                <a href="#resume" class="hover:text-primary transition-colors duration-150">Resume</a>
+                <a href="#hero" class="hover:text-primary transition-colors duration-300">About</a>
+                <a href="#projects" class="hover:text-primary transition-colors duration-300">Projects</a>
+                <a href="#skills" class="hover:text-primary transition-colors duration-300">Skills</a>
+                <a href="#experience" class="hover:text-primary transition-colors duration-300">Experience</a>
+                <a href="#resume" class="hover:text-primary transition-colors duration-300">Resume</a>
             </nav>
-            <button id="mobile-menu-btn" class="md:hidden text-text-primary focus:outline-none" aria-label="Toggle Menu">
+            <button id="mobile-menu-btn" class="md:hidden text-text-primary focus:outline-none hover:text-primary transition-colors" aria-label="Toggle Menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
-        <nav id="mobile-nav" class="hidden md:hidden bg-surface border-b border-secondary px-6 py-4 flex-col gap-4 font-medium text-text-muted shadow-lg">
-            <a href="#hero" class="mobile-link hover:text-primary transition-colors duration-150">About</a>
-            <a href="#projects" class="mobile-link hover:text-primary transition-colors duration-150">Projects</a>
-            <a href="#skills" class="mobile-link hover:text-primary transition-colors duration-150">Skills</a>
-            <a href="#experience" class="mobile-link hover:text-primary transition-colors duration-150">Experience</a>
-            <a href="#resume" class="mobile-link hover:text-primary transition-colors duration-150">Resume</a>
+        <nav id="mobile-nav" class="hidden md:hidden glass-panel border-t border-secondary/50 px-6 py-4 flex-col gap-4 font-medium text-text-muted shadow-2xl absolute w-full">
+            <a href="#hero" class="mobile-link hover:text-primary transition-colors duration-300">About</a>
+            <a href="#projects" class="mobile-link hover:text-primary transition-colors duration-300">Projects</a>
+            <a href="#skills" class="mobile-link hover:text-primary transition-colors duration-300">Skills</a>
+            <a href="#experience" class="mobile-link hover:text-primary transition-colors duration-300">Experience</a>
+            <a href="#resume" class="mobile-link hover:text-primary transition-colors duration-300">Resume</a>
         </nav>
     </header>
 
@@ -65,18 +71,18 @@
     <main class="flex-grow pt-20">
 
         <!-- 1. Hero / About Section -->
-        <section id="hero" data-page-section="hero" class="max-w-6xl mx-auto px-6 py-24 md:py-32 flex flex-col justify-center min-h-[85svh]">
-            <p class="text-primary font-medium mb-4 tracking-wide uppercase text-sm">Hello, my name is...</p>
+        <section id="hero" data-page-section="hero" class="max-w-6xl mx-auto px-6 py-24 md:py-32 flex flex-col justify-center min-h-[85svh] relative z-10">
+            <p class="text-primary font-medium mb-6 tracking-widest uppercase text-sm flex items-center gap-4 before:content-[''] before:w-8 before:h-[2px] before:bg-primary">Hello, my name is</p>
 
-            <h1 class="text-5xl md:text-7xl font-display font-bold text-text-primary mb-4" id="hero-name">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-text-primary mb-4 tracking-tight" id="hero-name">
                 <div class="h-16 w-64 bg-surface animate-pulse rounded"></div>
             </h1>
 
-            <h2 class="text-4xl md:text-6xl font-display font-bold text-text-muted mb-8" id="hero-tagline">
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-gradient mb-8 pb-2" id="hero-tagline">
                 <div class="h-14 w-3/4 max-w-2xl bg-surface animate-pulse rounded"></div>
             </h2>
 
-            <div class="max-w-2xl text-lg text-text-muted mb-10 leading-relaxed" id="hero-bio">
+            <div class="max-w-2xl text-lg md:text-xl text-text-muted mb-12 leading-relaxed font-light" id="hero-bio">
                 <div class="space-y-3">
                     <div class="h-4 w-full bg-surface animate-pulse rounded"></div>
                     <div class="h-4 w-5/6 bg-surface animate-pulse rounded"></div>
@@ -93,7 +99,7 @@
         </section>
 
         <!-- 2. Projects Section -->
-        <section id="projects" data-page-section="projects" class="max-w-6xl mx-auto px-6 py-24">
+        <section id="projects" data-page-section="projects" class="max-w-6xl mx-auto px-6 py-24 relative z-10">
             <h2 class="section-heading">Featured Projects</h2>
             <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="card animate-pulse h-96 flex flex-col gap-4">
@@ -105,17 +111,17 @@
         </section>
 
         <!-- 3. Skills Section -->
-        <section id="skills" data-page-section="skills" class="max-w-6xl mx-auto px-6 py-24 bg-surface/30 rounded-3xl my-12">
+        <section id="skills" data-page-section="skills" class="max-w-6xl mx-auto px-6 py-24 glass-panel rounded-3xl my-12 relative z-10">
             <h2 class="section-heading">Technical Skills</h2>
-            <div id="skills-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="skills-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <div class="space-y-4"><div class="h-6 w-32 bg-surface animate-pulse rounded"></div><div class="h-32 w-full bg-surface animate-pulse rounded"></div></div>
             </div>
         </section>
 
         <!-- 4. Experience Section -->
-        <section id="experience" data-page-section="experience" class="max-w-4xl mx-auto px-6 py-24">
+        <section id="experience" data-page-section="experience" class="max-w-4xl mx-auto px-6 py-24 relative z-10">
             <h2 class="section-heading">Experience</h2>
-            <div id="experience-container" class="space-y-8">
+            <div id="experience-container" class="space-y-12 border-l-2 border-secondary/30 ml-3 md:ml-0 md:border-none">
                 <div class="flex gap-4 animate-pulse">
                     <div class="w-3 h-3 rounded-full bg-primary mt-1.5 shrink-0"></div>
                     <div class="space-y-4 w-full">
@@ -127,12 +133,12 @@
         </section>
 
         <!-- 5. Resume Section -->
-        <section id="resume" data-page-section="resume" class="max-w-4xl mx-auto px-6 py-24 text-center">
+        <section id="resume" data-page-section="resume" class="max-w-4xl mx-auto px-6 py-24 text-center relative z-10">
             <h2 class="section-heading mb-4">Resume</h2>
-            <p class="text-text-muted mb-8 max-w-xl mx-auto">View my full qualifications, experience, and education history.</p>
+            <p class="text-text-muted mb-10 max-w-xl mx-auto text-lg">View my full qualifications, experience, and education history.</p>
 
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                <a href="./assets/resume.pdf" target="_blank" rel="noopener noreferrer" class="btn-primary w-full sm:w-auto">
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
+                <a href="./assets/resume.pdf" target="_blank" rel="noopener noreferrer" class="btn-primary w-full sm:w-auto shadow-[0_0_30px_rgba(64,138,113,0.2)]">
                     Open PDF Resume
                 </a>
                 <a href="./assets/resume.pdf" download class="btn-ghost w-full sm:w-auto">
@@ -142,8 +148,8 @@
         </section>
 
         <!-- 6. Privacy & Consent Section -->
-        <section id="privacy" data-page-section="privacy" class="max-w-3xl mx-auto px-6 pt-16 pb-24 border-t border-secondary/50 mt-12 text-center">
-            <h2 class="text-2xl font-display font-bold text-text-primary mb-4">Privacy & Cookie Policy</h2>
+        <section id="privacy" data-page-section="privacy" class="max-w-3xl mx-auto px-6 pt-16 pb-24 border-t border-secondary/30 mt-12 text-center relative z-10">
+            <h2 class="text-2xl font-display font-bold text-text-primary mb-6">Privacy & Cookie Policy</h2>
             <p class="text-text-muted leading-relaxed mb-4">
                 This website respects your privacy. It only collects basic page view counts to see how many people visit the portfolio. No personal data, IP addresses, or tracking identifiers are stored or shared with third parties.
             </p>
@@ -156,12 +162,12 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-surface border-t border-secondary py-8 mt-auto">
+    <footer class="glass-panel border-t border-secondary/50 py-8 mt-auto relative z-10">
         <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-text-muted text-sm flex items-center gap-3">
                 <span>© 2026 <span id="footer-name">Seth Gran</span>.</span>
                 <span class="hidden md:inline text-secondary">|</span>
-                <span id="view-count" class="font-mono text-xs bg-surface px-2 py-1 rounded border border-secondary" title="Page Views">Views: 0</span>
+                <span id="view-count" class="font-mono text-xs bg-surface/80 px-3 py-1.5 rounded-md border border-secondary/50 shadow-inner" title="Page Views">Views: 0</span>
             </p>
             <div class="flex gap-6" id="footer-links"></div>
         </div>
