@@ -128,30 +128,65 @@
         <section id="resume" data-page-section="resume" class="max-w-6xl mx-auto px-6 py-24">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
                 <h2 class="section-heading mb-0">Resume</h2>
-                <a href="./assets/resume.pdf" target="_blank" class="btn-ghost text-sm px-4 py-2">Download PDF</a>
+                <a href="./assets/resume.pdf" download class="btn-ghost text-sm px-4 py-2">Download PDF</a>
             </div>
-            <div id="pdf-container" class="w-full h-[600px] md:h-[800px] bg-surface border border-secondary rounded-lg flex items-center justify-center overflow-hidden relative shadow-inner">
-                <!-- PDF.js will render here. Skeleton for now -->
-                <div class="flex flex-col items-center text-text-muted">
-                    <svg class="w-12 h-12 mb-4 animate-pulse text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <span class="font-medium tracking-wide">Loading Resume Viewer...</span>
+            
+            <div class="bg-surface border border-secondary rounded-lg shadow-inner flex flex-col overflow-hidden">
+                <!-- PDF Toolbar -->
+                <div class="flex items-center justify-between p-4 border-b border-secondary bg-background/50">
+                    <button id="pdf-prev" class="btn-ghost text-sm px-3 py-1 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Previous</button>
+                    <span id="pdf-page-indicator" class="text-sm font-medium text-text-muted font-mono">Loading...</span>
+                    <button id="pdf-next" class="btn-ghost text-sm px-3 py-1 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Next</button>
+                </div>
+                
+                <!-- PDF Canvas Container -->
+                <div id="pdf-container" class="w-full overflow-auto flex justify-center bg-surface/30 p-4 min-h-[600px] md:min-h-[800px] relative">
+                    <canvas id="pdf-canvas" class="max-w-full shadow-2xl rounded"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- 6. Privacy & Consent Section (Static) -->
-        <section id="privacy" data-page-section="privacy" class="max-w-4xl mx-auto px-6 py-24 border-t border-secondary/50 mt-12">
-            <h2 class="text-2xl font-display font-bold text-text-primary mb-6">Privacy & Consent</h2>
-            <div class="prose prose-invert prose-p:text-text-muted prose-a:text-primary max-w-none leading-relaxed">
-                <p class="mb-4">This portfolio respects your privacy. It is hosted on a self-managed server and does not use third-party tracking scripts like Google Analytics or Meta Pixels.</p>
-                <p class="mb-4"><strong>Data Collection:</strong> The only tracking implemented is a custom, self-hosted view counter. This counter only increments if you explicitly grant "Analytics" consent via the cookie banner.</p>
-                <p class="mb-4"><strong>Cookies:</strong></p>
-                <ul class="list-disc pl-6 mb-8 text-text-muted space-y-2">
-                    <li><strong>Necessary:</strong> A single cookie (<code>portfolio_consent</code>) is used to remember your consent preferences. This is required to prevent the banner from showing on every visit.</li>
-                    <li><strong>Analytics:</strong> If enabled, allows the site to send an anonymous POST request to a self-hosted API to increment a page view counter. No personal data or IP addresses are stored.</li>
-                </ul>
-                <button id="btn-open-preferences" class="btn-ghost text-sm px-4 py-2">Manage Cookie Preferences</button>
+        <!-- 6. Privacy & Consent Section -->
+        <section id="privacy" data-page-section="privacy" class="max-w-6xl mx-auto px-6 py-24 border-t border-secondary/50 mt-12">
+            <h2 class="section-heading">Privacy & Consent</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <!-- Card 1: What This Site Collects -->
+                <div class="card flex flex-col">
+                    <h3 class="text-lg font-display font-bold text-text-primary mb-3">What This Site Collects</h3>
+                    <p class="text-sm text-text-muted leading-relaxed">
+                        Page view counts only. No names, IP addresses, or personal data are stored. The view counter increments once per page load when analytics consent is granted. No data is ever shared with third parties.
+                    </p>
+                </div>
+
+                <!-- Card 2: How Consent Works -->
+                <div class="card flex flex-col">
+                    <h3 class="text-lg font-display font-bold text-text-primary mb-3">How Consent Works</h3>
+                    <p class="text-sm text-text-muted leading-relaxed mb-6 flex-grow">
+                        Consent is stored in a first-party cookie named <code class="bg-background px-1.5 py-0.5 rounded text-primary font-mono text-xs">portfolio_consent</code>. It expires after 180 days and uses <code class="bg-background px-1.5 py-0.5 rounded text-primary font-mono text-xs">SameSite=Strict</code>.
+                    </p>
+                    <button data-consent-preferences class="btn-ghost text-sm px-4 py-2 w-full mt-auto">Manage Preferences</button>
+                </div>
+
+                <!-- Card 3: Cookie Categories -->
+                <div class="card flex flex-col">
+                    <h3 class="text-lg font-display font-bold text-text-primary mb-4">Cookie Categories</h3>
+                    <div class="space-y-4 text-sm flex-grow">
+                        <div>
+                            <span class="font-medium text-accent block mb-1">Necessary:</span>
+                            <span class="text-text-muted leading-relaxed">Always active. Required for the site to function. No personal data.</span>
+                        </div>
+                        <div class="border-t border-secondary/50 pt-4">
+                            <span class="font-medium text-accent block mb-1">Analytics:</span>
+                            <span class="text-text-muted leading-relaxed">Optional. Controls the page view counter. Enabled only with your consent.</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <p class="text-sm text-text-muted italic text-center max-w-3xl mx-auto leading-relaxed">
+                "Built as a demonstration of custom consent logic for privacy compliance using vanilla web technologies. No third-party tag managers or analytics platforms are used."
+            </p>
         </section>
 
     </main>

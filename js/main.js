@@ -2,6 +2,7 @@ import { initProjects } from './projects.js';
 import { initSkills } from './skills.js';
 import { initExperience } from './experience.js';
 import initAnalytics from './analytics.js';
+import initPdfViewer from './pdf-viewer.js';
 
 async function initApp() {
     console.log("[App] Initialization started...");
@@ -15,10 +16,13 @@ async function initApp() {
     initSkills();
     initExperience();
 
-    // 3. Initialize Analytics (Listens for consent events)
+    // 3. Initialize PDF Viewer
+    initPdfViewer();
+
+    // 4. Initialize Analytics (Listens for consent events)
     initAnalytics();
 
-    // 4. Setup UI Interactions
+    // 5. Setup UI Interactions
     setupSmoothScrolling();
     setupIntersectionObserver();
 
@@ -36,7 +40,7 @@ async function initMeta() {
         console.log("[Meta] Fetching meta.json...");
         const response = await fetch('./data/meta.json');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
+
         const meta = await response.json();
         console.log("[Meta] Data loaded successfully.");
 
@@ -46,7 +50,7 @@ async function initMeta() {
         // Update Header & Footer
         const navLogo = document.getElementById('nav-logo');
         if (navLogo) navLogo.textContent = meta.name;
-        
+
         const footerName = document.getElementById('footer-name');
         if (footerName) footerName.textContent = meta.name;
 
@@ -83,19 +87,19 @@ async function initMeta() {
 
 function setupSmoothScrolling() {
     const navLinks = document.querySelectorAll('nav a[href^="#"], #hero-actions a[href^="#"]');
-    
+
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
                 // Offset for fixed header
                 const headerOffset = 80;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-  
+
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'
@@ -107,7 +111,7 @@ function setupSmoothScrolling() {
 
 function setupIntersectionObserver() {
     const sections = document.querySelectorAll('section[data-page-section]');
-    
+
     // Add base animation class to all sections
     sections.forEach(section => {
         section.classList.add('fade-in-section');

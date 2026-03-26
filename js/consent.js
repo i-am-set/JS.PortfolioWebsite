@@ -153,8 +153,9 @@ export default function init() {
         showBanner();
     }
     
-    const prefBtn = document.getElementById('btn-open-preferences');
-    if (prefBtn) prefBtn.addEventListener('click', showModal);
+    // Wire up any button with the data-consent-preferences attribute to open the modal
+    const prefBtns = document.querySelectorAll('[data-consent-preferences]');
+    prefBtns.forEach(btn => btn.addEventListener('click', showModal));
 }
 
 // Auto-initialize when module loads
