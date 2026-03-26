@@ -1,7 +1,7 @@
 export async function initSkills() {
     const widget = document.getElementById('bento-skills');
     const summaryContainer = document.getElementById('skills-summary');
-
+    
     if (!widget || !summaryContainer) {
         console.warn('[Skills] Widget not found. Check HTML ID.');
         return;
@@ -10,11 +10,11 @@ export async function initSkills() {
     try {
         const response = await fetch('./data/skills.json');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
+        
         const skillsData = await response.json();
-
+        
         const allSkills = skillsData.flatMap(cat => cat.items).slice(0, 8);
-        summaryContainer.innerHTML = allSkills.map(skill =>
+        summaryContainer.innerHTML = allSkills.map(skill => 
             `<span class="px-3 py-1 bg-background/50 border border-secondary/30 rounded-lg text-xs text-text-muted whitespace-nowrap">${skill}</span>`
         ).join('') + `<span class="px-3 py-1 bg-primary/10 border border-primary/30 rounded-lg text-xs text-primary whitespace-nowrap">+ More</span>`;
 

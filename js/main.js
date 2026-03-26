@@ -1,10 +1,11 @@
-import { initProjects } from './projects.js';
-import { initSkills } from './skills.js';
-import { initExperience } from './experience.js';
+// Cache busters added to imports to prevent browser from using old files
+import { initProjects } from './projects.js?v=3';
+import { initSkills } from './skills.js?v=3';
+import { initExperience } from './experience.js?v=3';
 import initAnalytics from './analytics.js';
 import { initConsent } from './consent.js';
 
-console.log('[App] Initializing Bento Dashboard v2...');
+console.log('[App] Initializing Bento Dashboard v3...');
 
 async function initApp() {
     await initMeta();

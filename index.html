@@ -70,6 +70,17 @@
             }
         }
     </style>
+
+    <!-- Global Error Boundary to catch silent failures -->
+    <script>
+        window.addEventListener('error', function (e) {
+            console.error('Global Error:', e.message);
+            const errDiv = document.createElement('div');
+            errDiv.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#ef4444;color:white;padding:12px 20px;border-radius:8px;z-index:99999;font-family:monospace;font-size:12px;box-shadow:0 4px 12px rgba(0,0,0,0.5);';
+            errDiv.textContent = `JS Error: ${e.message}`;
+            document.body.appendChild(errDiv);
+        });
+    </script>
 </head>
 <body class="relative min-h-screen flex flex-col bg-background text-text-primary font-sans antialiased lg:overflow-hidden">
 
@@ -206,7 +217,7 @@
     <div id="toast-container" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none"></div>
     <div id="consent-container"></div>
 
-    <!-- CACHE BUSTER (?v=2) -->
-    <script type="module" src="./js/main.js?v=2" defer></script>
+    <!-- Cache Buster applied here -->
+    <script type="module" src="./js/main.js?v=3" defer></script>
 </body>
 </html>

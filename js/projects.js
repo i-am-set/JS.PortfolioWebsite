@@ -10,7 +10,7 @@ export async function initProjects() {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const projects = await response.json();
-
+        
         if (projects.length > 0) {
             const bgEl = document.getElementById('projects-bg');
             const subEl = document.getElementById('projects-subtitle');
