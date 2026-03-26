@@ -1,11 +1,11 @@
 // Cache busters added to imports to prevent browser from using old files
-import { initProjects } from './projects.js?v=7';
-import { initSkills } from './skills.js?v=7';
-import { initExperience } from './experience.js?v=7';
-import initAnalytics from './analytics.js?v=7';
-import { initConsent } from './consent.js?v=7';
+import { initProjects } from './projects.js?v=9';
+import { initSkills } from './skills.js?v=9';
+import { initExperience } from './experience.js?v=9';
+import initAnalytics from './analytics.js?v=9';
+import { initConsent } from './consent.js?v=9';
 
-console.log('[App] Initializing Bento Dashboard v7...');
+console.log('[App] Initializing Bento Dashboard v9...');
 
 async function initApp() {
     await initMeta();
@@ -39,6 +39,7 @@ async function initMeta() {
         const heroTagline = document.getElementById('hero-tagline');
         const aboutBio = document.getElementById('about-bio');
 
+        const heroPhoneLink = document.getElementById('hero-phone-link');
         const heroEmailLink = document.getElementById('hero-email-link');
         const heroGithubLink = document.getElementById('hero-github-link');
         const heroLinkedinLink = document.getElementById('hero-linkedin-link');
@@ -46,7 +47,22 @@ async function initMeta() {
         if (navLogo) navLogo.textContent = meta.name;
         if (heroName) heroName.textContent = meta.name;
         if (heroTagline) heroTagline.textContent = meta.tagline;
-        if (aboutBio) aboutBio.textContent = meta.bio;
+
+        if (aboutBio && meta.bio) {
+            // Handle both actual newlines and escaped \n strings just in case
+            const formattedBio = meta.bio.replace(/\\n/g, '\n');
+            const paragraphs = formattedBio.split('\n').filter(p => p.trim() !== '');
+            aboutBio.innerHTML = paragraphs.map(p => `<p class="indent-6 mb-3 last:mb-0">${p.trim()}</p>`).join('');
+        }
+
+        if (heroPhoneLink) {
+            heroPhoneLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigator.clipboard.writeText('(678) 444-5543').then(() => {
+                    showToast('Phone number copied to clipboard!');
+                });
+            });
+        }
 
         if (meta.links) {
             if (heroEmailLink && meta.links.email) {
