@@ -9,7 +9,6 @@
     --color-text-primary: #E8F5F0;
     --color-text-muted: #8AB4A5;
     --font-display: "Outfit", "Inter", system-ui, sans-serif;
-    /* Removed heavy animations to prevent repaints and flickering */
 }
 
 :root {
@@ -25,14 +24,11 @@
 @layer base {
     body {
         background-color: var(--color-background);
-        /* Added a static radial gradient to replace the moving blobs, keeping the aesthetic without the performance cost */
         background-image: radial-gradient(circle at 15% 50%, rgba(40, 138, 113, 0.08), transparent 35%), radial-gradient(circle at 85% 30%, rgba(40, 90, 72, 0.12), transparent 35%);
         background-attachment: fixed;
         color: var(--color-text-primary);
         @apply font-sans antialiased;
-        /* Prevent scroll on desktop, allow on mobile */
         @apply lg:overflow-hidden;
-        /* Anti-flicker & Crispness Optimizations */
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
@@ -59,4 +55,35 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--color-primary);
         }
+}
+
+@layer utilities {
+    .gpu-accel {
+        transform: translateZ(0);
+        will-change: transform, opacity;
+        backface-visibility: hidden;
+    }
+
+    #bento-experience [style*="background-color"],
+    #bento-projects [style*="background-color"] {
+        background-color: transparent !important;
+    }
+
+    #bento-experience[class*="rounded-full"],
+    #bento-projects [class*="rounded-full"],
+    .icon-circle,
+    .arrow-icon {
+        transition: background-color 0.2s ease-out, transform 0.2s ease-out, color 0.2s ease-out !important;
+        will-change: transform, background-color;
+        transform: translateZ(0);
+    }
+
+    #bento-experience:hover [class*="rounded-full"],
+    #bento-projects:hover [class*="rounded-full"],
+    .group:hover .icon-circle,
+    .group:hover .arrow-icon {
+        background-color: var(--color-primary) !important;
+        color: var(--color-background) !important;
+        transform: scale(1.1) translateZ(0) !important;
+    }
 }
