@@ -1,0 +1,185 @@
+# =============================================================================
+# PORTFOLIO WEBSITE — .gitignore
+# Stack: Vanilla JS, Tailwind CSS, Node.js, MonoGame/.NET (WASM)
+# Editors: VS Code, Visual Studio 2022
+# OS: Windows 11 (WSL2)
+# =============================================================================
+
+
+# =============================================================================
+# NODE / NPM
+# =============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+package-lock.json
+
+
+# =============================================================================
+# TAILWIND CSS
+# =============================================================================
+css/output.css
+
+
+# =============================================================================
+# VIEW COUNTER DATA
+# =============================================================================
+api/views.json
+
+
+# =============================================================================
+# ENVIRONMENT & SECRETS
+# =============================================================================
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+*.secret
+secrets.json
+
+
+# =============================================================================
+# SSL CERTIFICATES (generated locally via openssl / certbot)
+# =============================================================================
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+/ssl/
+/certs/
+
+
+# =============================================================================
+# VS CODE
+# =============================================================================
+.vscode/*
+!.vscode/settings.json     # Keep shared editor settings (tab size, formatter)
+!.vscode/extensions.json   # Keep recommended extensions list for the project
+!.vscode/launch.json       # Keep debug configs if you add any
+.vscode/tasks.json         # Personal task runner config — too machine-specific
+.history/                  # Local History extension
+*.code-workspace
+
+
+# =============================================================================
+# VISUAL STUDIO 2022 (MonoGame / .NET projects)
+# =============================================================================
+
+# Build output
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# VS metadata
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+.idea/
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider (if you ever switch)
+.idea/
+*.sln.iml
+
+# Test results
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# Crash dumps
+*.dmp
+
+
+# =============================================================================
+# MONOGAME / WASM BUILD OUTPUT
+# =============================================================================
+publish/
+*.wasm                     # Compiled WASM artifacts are build output
+wwwroot/                   # Blazor publish folder if used
+_framework/                # .NET WASM bootstrap files (generated on publish)
+
+
+# =============================================================================
+# WINDOWS
+# =============================================================================
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+*.stackdump
+
+
+# =============================================================================
+# WSL2 / LINUX
+# =============================================================================
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+
+# =============================================================================
+# MACOS (if you ever collaborate cross-platform)
+# =============================================================================
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+
+# =============================================================================
+# LOGS & RUNTIME
+# =============================================================================
+logs/
+*.log
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+
+# =============================================================================
+# ASSETS — NEVER COMMIT LARGE BINARIES
+# =============================================================================
+assets/videos/*.mp4        # Gameplay capture — too large for git, host separately
+assets/videos/*.webm
+assets/images/raw/         # Uncompressed source art — keep off repo
+*.psd
+*.ai
+*.sketch
+
