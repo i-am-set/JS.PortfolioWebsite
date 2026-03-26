@@ -1,35 +1,12 @@
-[
-  {
-    "id": "voxel-engine",
-    "title": "Voxel Engine Prototyping",
-    "description": "A custom voxel rendering engine built from scratch using C# and MonoGame. Features include greedy meshing for optimized chunk rendering, multi-threaded chunk generation using Perlin noise, and custom HLSL shaders for dynamic lighting and ambient occlusion.",
-    "technologies": ["C#", "MonoGame", "HLSL", "Multi-threading"],
-    "imageUrl": "./assets/images/project-voxel.jpg",
-    "repoUrl": "https://github.com/yourusername/voxel-engine",
-    "liveUrl": "",
-    "hasWebEmbed": false,
-    "embedPath": ""
-  },
-  {
-    "id": "cybernetic-rogue",
-    "title": "Cybernetic Rogue",
-    "description": "A fast-paced 2D roguelite developed in Unity utilizing a custom Entity-Component-System (ECS) architecture for handling thousands of active projectiles. Implemented A* pathfinding for enemy AI and a modular weapon generation system.",
-    "technologies": ["Unity", "C#", "ECS", "WebGL"],
-    "imageUrl": "./assets/images/project-rogue.jpg",
-    "repoUrl": "https://github.com/yourusername/cybernetic-rogue",
-    "liveUrl": "https://yourdomain.com/play/cybernetic-rogue",
-    "hasWebEmbed": true,
-    "embedPath": "./assets/games/cybernetic-rogue/index.html"
-  },
-  {
-    "id": "level-editor-pipeline",
-    "title": "Level Editor & Asset Pipeline",
-    "description": "A standalone desktop application built with C# and WPF for designing 2D tile-based levels. Includes a custom binary serialization format for fast loading and a Node.js/Express backend for syncing level data across multiple developers.",
-    "technologies": ["C#", "WPF", "Node.js", "Express", "Binary Serialization"],
-    "imageUrl": "./assets/images/project-editor.jpg",
-    "repoUrl": "https://github.com/yourusername/level-editor",
-    "liveUrl": "",
-    "hasWebEmbed": false,
-    "embedPath": ""
-  }
+{
+  "id": "multithreaded-world-gen",
+  "title": "Multithreaded World Generation System",
+  "description": "Designed and implemented an asynchronous world generation system in C# and Python, applying for scalability. Debugged stability issues across parallel processes, performing root cause analysis to ensure reliable execution. Wrote validation tests to verify system behavior and maintain quality across iterative development.",
+  "technologies": [ "C#", "Python", "Multithreading" ],
+  "imageUrl": "./assets/images/project-rime.jpg",
+  "repoUrl": "https://github.com/i-am-set/G.Project-Rime",
+  "liveUrl": "",
+  "hasWebEmbed": false,
+  "embedPath": ""
+}
 ]

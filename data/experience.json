@@ -1,13 +1,15 @@
-[
-  {
-    "role": "Indie Game Developer & Freelance Software Engineer",
-    "company": "Self-Employed",
-    "period": "Jan 2022 - Present",
-    "description": "Designed, developed, and published interactive software and games, managing the full lifecycle from concept to deployment. Collaborated with freelance artists and designers to integrate assets into custom pipelines.",
-    "highlights": [
-      "Engineered a custom 2D physics controller in C# for a platformer, resolving edge-case collision bugs present in out-of-the-box solutions.",
-      "Optimized rendering loops in MonoGame, achieving a consistent 60 FPS on low-end hardware by implementing spatial partitioning (QuadTrees).",
-      "Developed a RESTful leaderboard API using Node.js and Express, hosted on a self-managed Linux VPS via Nginx."
-    ]
-  }
+{
+  "role": "Software Developer Intern",
+  "company": "Landis+Gyr | Alpharetta, GA",
+  "period": "May 2025 - Aug 2025",
+  "description": "",
+  "highlights": [
+    "Resolved 150+ code quality and security vulnerabilities identified via SonarQube, applying secure coding practices to improve system reliability.",
+    "Led modernization of legacy DAL Generator, migrating from Oracle to PostgreSQL and eliminating ~$2.13M/year in licensing costs.",
+    "Debugged database and application-level issues across legacy systems, performing root cause analysis and implementing fixes that reduced resolution time.",
+    "Collaborated with engineering, QA, and product teams to break down technical requirements and deliver scalable, well-tested solutions.",
+    "Participated in full Agile/Scrum cycle; sprint planning, standups, retrospectives; using Azure DevOps to manage tasks, track issues, and communicate status to stakeholders.",
+    "Designed and consumed RESTful APIs to support cross-service integrations, applying HTTP best practices and JSON data contracts."
+  ]
+}
 ]

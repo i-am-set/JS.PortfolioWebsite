@@ -3,26 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Primary Meta Tags -->
+
     <title>Portfolio - Loading...</title>
     <meta name="theme-color" content="#091413">
-    
-    <!-- Open Graph / Facebook / LinkedIn -->
+
     <meta property="og:type" content="website">
     <meta property="og:title" content="Portfolio">
-    <meta property="og:description" content="C# Game Developer & Software Engineer Portfolio">
-    
-    <!-- Google Fonts: Outfit (Display) & Inter (Body) -->
+    <meta property="og:description" content="Software Engineer Portfolio">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS Output -->
+
     <link href="./css/output.css" rel="stylesheet">
 </head>
-<body class="bg-background text-text-primary font-sans antialiased flex flex-col min-h-screen selection:bg-primary selection:text-background">
-    
+<body class="bg-background text-text-primary font-sans antialiased flex flex-col min-h-screen overflow-x-hidden selection:bg-primary selection:text-background">
+
     <!-- Navigation -->
     <header class="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-secondary z-50 transition-all duration-300">
         <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -36,28 +32,36 @@
                 <a href="#experience" class="hover:text-primary transition-colors">Experience</a>
                 <a href="#resume" class="hover:text-primary transition-colors">Resume</a>
             </nav>
-            <!-- Mobile Menu Button (Hidden on Desktop) -->
-            <button class="md:hidden text-text-primary focus:outline-none" aria-label="Toggle Menu">
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-text-primary focus:outline-none" aria-label="Toggle Menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
+        <!-- Mobile Dropdown Nav -->
+        <nav id="mobile-nav" class="hidden md:hidden bg-surface border-b border-secondary px-6 py-4 flex-col gap-4 font-medium text-text-muted shadow-lg">
+            <a href="#hero" class="mobile-link hover:text-primary transition-colors">About</a>
+            <a href="#projects" class="mobile-link hover:text-primary transition-colors">Projects</a>
+            <a href="#skills" class="mobile-link hover:text-primary transition-colors">Skills</a>
+            <a href="#experience" class="mobile-link hover:text-primary transition-colors">Experience</a>
+            <a href="#resume" class="mobile-link hover:text-primary transition-colors">Resume</a>
+        </nav>
     </header>
 
     <!-- Main Content -->
     <main class="flex-grow pt-20">
-        
+
         <!-- 1. Hero / About Section -->
-        <section id="hero" data-page-section="hero" class="max-w-6xl mx-auto px-6 py-24 md:py-32 flex flex-col justify-center min-h-[85vh]">
+        <section id="hero" data-page-section="hero" class="max-w-6xl mx-auto px-6 py-24 md:py-32 flex flex-col justify-center min-h-[85svh]">
             <p class="text-primary font-medium mb-4 tracking-wide uppercase text-sm">Hello, my name is...</p>
-            
+
             <h1 class="text-5xl md:text-7xl font-display font-bold text-text-primary mb-4" id="hero-name">
                 <div class="h-16 w-64 bg-surface animate-pulse rounded"></div>
             </h1>
-            
+
             <h2 class="text-4xl md:text-6xl font-display font-bold text-text-muted mb-8" id="hero-tagline">
                 <div class="h-14 w-3/4 max-w-2xl bg-surface animate-pulse rounded"></div>
             </h2>
-            
+
             <div class="max-w-2xl text-lg text-text-muted mb-10 leading-relaxed" id="hero-bio">
                 <div class="space-y-3">
                     <div class="h-4 w-full bg-surface animate-pulse rounded"></div>
@@ -65,7 +69,7 @@
                     <div class="h-4 w-4/6 bg-surface animate-pulse rounded"></div>
                 </div>
             </div>
-            
+
             <div class="flex flex-wrap gap-4" id="hero-actions">
                 <a href="#projects" class="btn-primary">View Projects</a>
                 <a href="#resume" class="btn-ghost">View Resume</a>
@@ -76,24 +80,11 @@
         <section id="projects" data-page-section="projects" class="max-w-6xl mx-auto px-6 py-24">
             <h2 class="section-heading">Featured Projects</h2>
             <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Skeleton Loaders -->
+                <!-- Skeletons -->
                 <div class="card animate-pulse h-96 flex flex-col gap-4">
                     <div class="h-48 bg-background rounded w-full"></div>
                     <div class="h-6 bg-background rounded w-3/4"></div>
                     <div class="h-4 bg-background rounded w-full"></div>
-                    <div class="h-4 bg-background rounded w-5/6"></div>
-                </div>
-                <div class="card animate-pulse h-96 flex flex-col gap-4 hidden md:flex">
-                    <div class="h-48 bg-background rounded w-full"></div>
-                    <div class="h-6 bg-background rounded w-3/4"></div>
-                    <div class="h-4 bg-background rounded w-full"></div>
-                    <div class="h-4 bg-background rounded w-5/6"></div>
-                </div>
-                <div class="card animate-pulse h-96 flex flex-col gap-4 hidden lg:flex">
-                    <div class="h-48 bg-background rounded w-full"></div>
-                    <div class="h-6 bg-background rounded w-3/4"></div>
-                    <div class="h-4 bg-background rounded w-full"></div>
-                    <div class="h-4 bg-background rounded w-5/6"></div>
                 </div>
             </div>
         </section>
@@ -101,11 +92,8 @@
         <!-- 3. Skills Section -->
         <section id="skills" data-page-section="skills" class="max-w-6xl mx-auto px-6 py-24 bg-surface/30 rounded-3xl my-12">
             <h2 class="section-heading">Technical Skills</h2>
-            <div id="skills-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Skeleton Loaders -->
-                <div class="space-y-4"><div class="h-6 w-32 bg-surface animate-pulse rounded"></div><div class="h-32 w-full bg-surface animate-pulse rounded"></div></div>
-                <div class="space-y-4"><div class="h-6 w-32 bg-surface animate-pulse rounded"></div><div class="h-32 w-full bg-surface animate-pulse rounded"></div></div>
-                <div class="space-y-4"><div class="h-6 w-32 bg-surface animate-pulse rounded"></div><div class="h-32 w-full bg-surface animate-pulse rounded"></div></div>
+            <div id="skills-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Skeletons -->
                 <div class="space-y-4"><div class="h-6 w-32 bg-surface animate-pulse rounded"></div><div class="h-32 w-full bg-surface animate-pulse rounded"></div></div>
             </div>
         </section>
@@ -113,80 +101,52 @@
         <!-- 4. Experience Section -->
         <section id="experience" data-page-section="experience" class="max-w-4xl mx-auto px-6 py-24">
             <h2 class="section-heading">Experience</h2>
-            <div id="experience-container" class="space-y-12 border-l-2 border-secondary pl-8 ml-4">
-                <!-- Skeleton Loaders -->
+            <div id="experience-container" class="space-y-12 border-l-2 border-secondary pl-6 md:pl-8 ml-2 md:ml-4">
+                <!-- Skeletons -->
                 <div class="space-y-4 relative">
-                    <div class="absolute -left-[41px] top-0 h-4 w-4 rounded-full bg-primary"></div>
+                    <div class="absolute -left-[33px] md:-left-[41px] top-0 h-4 w-4 rounded-full bg-primary"></div>
                     <div class="h-6 w-48 bg-surface animate-pulse rounded"></div>
-                    <div class="h-4 w-32 bg-surface animate-pulse rounded"></div>
                     <div class="h-24 w-full bg-surface animate-pulse rounded"></div>
                 </div>
             </div>
         </section>
 
-        <!-- 5. Resume Section -->
-        <section id="resume" data-page-section="resume" class="max-w-6xl mx-auto px-6 py-24">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
-                <h2 class="section-heading mb-0">Resume</h2>
-                <a href="./assets/resume.pdf" download class="btn-ghost text-sm px-4 py-2">Download PDF</a>
-            </div>
-            
-            <div class="bg-surface border border-secondary rounded-lg shadow-inner flex flex-col overflow-hidden">
-                <!-- PDF Toolbar -->
-                <div class="flex items-center justify-between p-4 border-b border-secondary bg-background/50">
-                    <button id="pdf-prev" class="btn-ghost text-sm px-3 py-1 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Previous</button>
-                    <span id="pdf-page-indicator" class="text-sm font-medium text-text-muted font-mono">Loading...</span>
-                    <button id="pdf-next" class="btn-ghost text-sm px-3 py-1 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Next</button>
-                </div>
-                
-                <!-- PDF Canvas Container -->
-                <div id="pdf-container" class="w-full overflow-auto flex justify-center bg-surface/30 p-4 min-h-[600px] md:min-h-[800px] relative">
-                    <canvas id="pdf-canvas" class="max-w-full shadow-2xl rounded"></canvas>
-                </div>
+        <!-- 5. Resume Section (Simplified for Mobile Performance) -->
+        <section id="resume" data-page-section="resume" class="max-w-4xl mx-auto px-6 py-24 text-center">
+            <h2 class="section-heading mb-4">Resume</h2>
+            <p class="text-text-muted mb-8 max-w-xl mx-auto">View my full qualifications, experience, and education history.</p>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="./assets/resume.pdf" target="_blank" rel="noopener noreferrer" class="btn-primary w-full sm:w-auto">
+                    Open PDF Resume
+                </a>
+                <a href="./assets/resume.pdf" download class="btn-ghost w-full sm:w-auto">
+                    Download PDF
+                </a>
             </div>
         </section>
 
         <!-- 6. Privacy & Consent Section -->
         <section id="privacy" data-page-section="privacy" class="max-w-6xl mx-auto px-6 py-24 border-t border-secondary/50 mt-12">
             <h2 class="section-heading">Privacy & Consent</h2>
-            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <!-- Card 1: What This Site Collects -->
                 <div class="card flex flex-col">
                     <h3 class="text-lg font-display font-bold text-text-primary mb-3">What This Site Collects</h3>
-                    <p class="text-sm text-text-muted leading-relaxed">
-                        Page view counts only. No names, IP addresses, or personal data are stored. The view counter increments once per page load when analytics consent is granted. No data is ever shared with third parties.
-                    </p>
+                    <p class="text-sm text-text-muted leading-relaxed">Page view counts only. No names, IP addresses, or personal data are stored.</p>
                 </div>
-
-                <!-- Card 2: How Consent Works -->
                 <div class="card flex flex-col">
                     <h3 class="text-lg font-display font-bold text-text-primary mb-3">How Consent Works</h3>
-                    <p class="text-sm text-text-muted leading-relaxed mb-6 flex-grow">
-                        Consent is stored in a first-party cookie named <code class="bg-background px-1.5 py-0.5 rounded text-primary font-mono text-xs">portfolio_consent</code>. It expires after 180 days and uses <code class="bg-background px-1.5 py-0.5 rounded text-primary font-mono text-xs">SameSite=Strict</code>.
-                    </p>
+                    <p class="text-sm text-text-muted leading-relaxed mb-6 flex-grow">Consent is stored in a first-party cookie. It expires after 180 days.</p>
                     <button data-consent-preferences class="btn-ghost text-sm px-4 py-2 w-full mt-auto">Manage Preferences</button>
                 </div>
-
-                <!-- Card 3: Cookie Categories -->
                 <div class="card flex flex-col">
                     <h3 class="text-lg font-display font-bold text-text-primary mb-4">Cookie Categories</h3>
                     <div class="space-y-4 text-sm flex-grow">
-                        <div>
-                            <span class="font-medium text-accent block mb-1">Necessary:</span>
-                            <span class="text-text-muted leading-relaxed">Always active. Required for the site to function. No personal data.</span>
-                        </div>
-                        <div class="border-t border-secondary/50 pt-4">
-                            <span class="font-medium text-accent block mb-1">Analytics:</span>
-                            <span class="text-text-muted leading-relaxed">Optional. Controls the page view counter. Enabled only with your consent.</span>
-                        </div>
+                        <div><span class="font-medium text-accent block mb-1">Necessary:</span><span class="text-text-muted">Required for the site to function.</span></div>
+                        <div class="border-t border-secondary/50 pt-4"><span class="font-medium text-accent block mb-1">Analytics:</span><span class="text-text-muted">Optional. Controls the page view counter.</span></div>
                     </div>
                 </div>
             </div>
-
-            <p class="text-sm text-text-muted italic text-center max-w-3xl mx-auto leading-relaxed">
-                "Built as a demonstration of custom consent logic for privacy compliance using vanilla web technologies. No third-party tag managers or analytics platforms are used."
-            </p>
         </section>
 
     </main>
@@ -195,21 +155,16 @@
     <footer class="bg-surface border-t border-secondary py-8 mt-auto">
         <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <p class="text-text-muted text-sm flex items-center gap-3">
-                <span>© 2025 <span id="footer-name">Seth Gran</span>. Built with vanilla JS & Tailwind.</span>
+                <span>© 2026 <span id="footer-name">Seth Gran</span>.</span>
                 <span class="hidden md:inline text-secondary">|</span>
-                <span id="view-count" class="font-mono text-xs bg-surface px-2 py-1 rounded border border-secondary" title="Page Views (Requires Analytics Consent)">Views: —</span>
+                <span id="view-count" class="font-mono text-xs bg-surface px-2 py-1 rounded border border-secondary" title="Page Views">Views: —</span>
             </p>
-            <div class="flex gap-6" id="footer-links">
-                <!-- JS will populate social links -->
-                <div class="h-5 w-32 bg-background animate-pulse rounded"></div>
-            </div>
+            <div class="flex gap-6" id="footer-links"></div>
         </div>
     </footer>
 
-    <!-- Consent Banner Container (Injected by JS) -->
     <div id="consent-container"></div>
 
-    <!-- JavaScript Modules -->
     <script type="module" src="./js/consent.js"></script>
     <script type="module" src="./js/main.js" defer></script>
 </body>

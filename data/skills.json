@@ -1,18 +1,21 @@
-[
-  {
+{
     "category": "Languages",
-    "items": ["C#", "JavaScript (ES6+)", "HTML5", "CSS3", "HLSL/GLSL"]
+  "items": [ "C# (.NET Core)", "Java", "Python", "JavaScript", "TypeScript", "SQL", "HTML5", "CSS3", "HLSL/GLSL" ]
   },
   {
-    "category": "Game Development",
-    "items": ["Unity", "MonoGame", "Entity-Component-System (ECS)", "Shader Programming", "3D/2D Math"]
+    "category": "Databases",
+    "items": ["SQL Server", "PostgreSQL", "Oracle"]
   },
   {
-    "category": "Web Technologies",
-    "items": ["Tailwind CSS", "Node.js", "Express", "REST APIs", "Nginx"]
+    "category": "Cloud & DevOps",
+    "items":["Microsoft Azure", "AWS", "Azure DevOps", "Docker", "Git"]
   },
   {
-    "category": "Tools & Workflow",
-    "items": ["Git", "Visual Studio 2022", "VS Code", "Postman", "Agile/Scrum"]
+    "category": "AI & Tooling",
+    "items":["GitHub Copilot", "Cursor", "Claude", "Google Gemini", "SonarQube"]
+  },
+  {
+    "category": "Practices & Web",
+    "items":["Agile/Scrum", "Unit Testing", "REST APIs", "HTTP/JSON", "Secure Coding"]
   }
 ]

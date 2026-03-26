@@ -1,11 +1,11 @@
 {
   "name": "Seth Gran",
-  "tagline": "Software Engineer & Game Developer",
+  "tagline": "Software Engineer",
   "domain": "localhost",
-  "bio": "I am a software engineer and game developer specializing in C#, XNA, and SQL. With a strong foundation in object-oriented programming, entity-component systems, and low-level rendering, I build performant, scalable applications and engaging interactive experiences. I am passionate about bridging the gap between complex backend architecture and seamless user interfaces.",
+  "bio": "Software engineer and B.S. Computer Science student at the University of North Georgia (GPA: 3.5). I have enterprise development experience in C# (.NET Core), Java, SQL, and cross-functional Agile teams. Proven ability to design and implement RESTful services, debug complex systems, modernize legacy code, and deliver measurable business impact.",
   "links": {
     "github": "https://github.com/i-am-set",
-    "linkedin": "https://www.linkedin.com/in/seth-gran/",
+    "linkedin": "https://www.linkedin.com/in/seth-gran",
     "email": "seth.gran@outlook.com"
   }
 }
