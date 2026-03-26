@@ -1,10 +1,11 @@
 import { initProjects } from './projects.js';
 import { initSkills } from './skills.js';
 import { initExperience } from './experience.js';
+import initAnalytics from './analytics.js';
 
 async function initApp() {
     console.log("[App] Initialization started...");
-    
+
     // 1. Fetch Meta Data and Populate Shell
     await initMeta();
 
@@ -14,10 +15,13 @@ async function initApp() {
     initSkills();
     initExperience();
 
-    // 3. Setup UI Interactions
+    // 3. Initialize Analytics (Listens for consent events)
+    initAnalytics();
+
+    // 4. Setup UI Interactions
     setupSmoothScrolling();
     setupIntersectionObserver();
-    
+
     console.log("[App] Initialization complete.");
 }
 
