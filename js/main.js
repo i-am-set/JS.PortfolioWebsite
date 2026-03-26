@@ -1,10 +1,11 @@
-import { initProjects } from './projects.js?v=4';
-import { initSkills } from './skills.js?v=4';
-import { initExperience } from './experience.js?v=4';
-import initAnalytics from './analytics.js?v=4';
-import { initConsent } from './consent.js?v=4';
+// Cache busters added to imports to prevent browser from using old files
+import { initProjects } from './projects.js?v=5';
+import { initSkills } from './skills.js?v=5';
+import { initExperience } from './experience.js?v=5';
+import initAnalytics from './analytics.js?v=5';
+import { initConsent } from './consent.js?v=5';
 
-console.log('[App] Initializing Bento Dashboard v4...');
+console.log('[App] Initializing Bento Dashboard v5...');
 
 async function initApp() {
     await initMeta();
@@ -82,18 +83,26 @@ async function initMeta() {
 }
 
 function setupClock() {
-    const timeEl = document.getElementById('local-time');
-    const dateEl = document.getElementById('local-date');
+    const myTimeEl = document.getElementById('my-time');
+    const myDateEl = document.getElementById('my-date');
+    const localTimeEl = document.getElementById('local-time');
+    const localDateEl = document.getElementById('local-date');
 
-    if (!timeEl || !dateEl) {
+    if (!myTimeEl || !myDateEl || !localTimeEl || !localDateEl) {
         console.warn('[Clock] Elements not found. Check HTML IDs.');
         return;
     }
 
     function updateTime() {
         const now = new Date();
-        timeEl.textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-        dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+        // My Time (EST/EDT - America/New_York)
+        myTimeEl.textContent = now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true });
+        myDateEl.textContent = now.toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric' });
+
+        // Your Time (Local)
+        localTimeEl.textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        localDateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
     }
 
     updateTime();

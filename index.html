@@ -69,6 +69,16 @@
                 }
             }
         }
+
+        @layer components {
+            .btn-primary {
+                @apply inline-flex items-center justify-center bg-primary text-background font-semibold py-2 px-4 rounded-xl hover:bg-accent transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer;
+            }
+
+            .btn-ghost {
+                @apply inline-flex items-center justify-center bg-transparent text-text-primary border border-secondary/50 font-semibold py-2 px-4 rounded-xl hover:bg-secondary/30 hover:border-primary/50 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer;
+            }
+        }
     </style>
 
     <!-- Global Error Boundary to catch silent failures -->
@@ -110,38 +120,45 @@
         </header>
 
         <!-- Bento Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-grow auto-rows-[200px] lg:auto-rows-fr">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-grow auto-rows-[minmax(200px,auto)] lg:auto-rows-fr">
 
             <!-- 1. Hero (Spans 2x2) -->
-            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] lg:col-span-2 lg:row-span-2 justify-between">
+            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] row-span-2 lg:col-span-2 lg:row-span-2 justify-between">
                 <div>
-                    <p class="text-primary font-medium mb-2 tracking-widest uppercase text-xs">Welcome</p>
+                    <p class="text-primary font-medium mb-2 tracking-widest uppercase text-xs">Welcome to</p>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-text-primary mb-4 leading-tight">
-                        Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary" id="hero-name">...</span>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary" id="hero-name">...</span>'s Portfolio
                     </h1>
                     <h2 class="text-xl md:text-2xl text-text-muted font-light" id="hero-tagline">Software Engineer</h2>
                 </div>
-                <div class="mt-8 flex gap-3" id="hero-socials">
+                <div class="mt-8 flex gap-3 flex-wrap" id="hero-socials">
                     <!-- Injected via JS -->
                 </div>
             </div>
 
             <!-- 2. About (Spans 1x2) -->
-            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] lg:col-span-1 lg:row-span-2">
+            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] row-span-2 lg:col-span-1 lg:row-span-2">
                 <h3 class="text-lg font-display font-bold text-text-primary mb-4 flex items-center gap-2 shrink-0">
                     <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                     About Me
                 </h3>
-                <div class="text-text-muted text-sm leading-relaxed overflow-y-auto pr-2 flex-grow" id="about-bio">
+                <div class="text-text-muted text-sm leading-relaxed overflow-y-auto pr-2 flex-grow text-justify indent-6" id="about-bio">
                     Loading bio...
                 </div>
             </div>
 
             <!-- 3. Time Widget (Spans 1x1) -->
-            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] lg:col-span-1 lg:row-span-1 justify-center items-center text-center">
-                <p class="text-text-muted text-xs uppercase tracking-widest mb-2">Local Time</p>
-                <div class="text-4xl md:text-5xl font-display font-bold text-text-primary tracking-tight mb-1" id="local-time">--:--</div>
-                <p class="text-primary text-sm font-mono" id="local-date">Loading...</p>
+            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 flex flex-col relative overflow-hidden transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] lg:col-span-1 lg:row-span-1 justify-center items-center text-center gap-4">
+                <div class="w-full flex flex-col items-center justify-center">
+                    <p class="text-text-muted text-[10px] uppercase tracking-widest mb-1">My Time (EST)</p>
+                    <div class="text-3xl font-display font-bold text-text-primary tracking-tight mb-1" id="my-time">--:--</div>
+                    <p class="text-primary text-xs font-mono" id="my-date">Loading...</p>
+                </div>
+                <div class="w-full border-t border-secondary/30 pt-4 flex flex-col items-center justify-center">
+                    <p class="text-text-muted text-[10px] uppercase tracking-widest mb-1">Your Time</p>
+                    <div class="text-2xl font-display font-bold text-text-primary tracking-tight mb-1" id="local-time">--:--</div>
+                    <p class="text-primary text-xs font-mono" id="local-date">Loading...</p>
+                </div>
             </div>
 
             <!-- 4. Resume Widget (Spans 1x1) -->
@@ -218,6 +235,6 @@
     <div id="consent-container"></div>
 
     <!-- Cache Buster applied here -->
-    <script type="module" src="./js/main.js?v=4" defer></script>
+    <script type="module" src="./js/main.js?v=5" defer></script>
 </body>
 </html>
