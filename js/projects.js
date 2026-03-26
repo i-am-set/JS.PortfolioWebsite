@@ -1,6 +1,9 @@
 export async function initProjects() {
     const widget = document.getElementById('bento-projects');
-    if (!widget) return;
+    if (!widget) {
+        console.warn('[Projects] Widget not found. Check HTML ID.');
+        return;
+    }
 
     try {
         const response = await fetch('./data/projects.json');
@@ -9,8 +12,10 @@ export async function initProjects() {
         const projects = await response.json();
 
         if (projects.length > 0) {
-            document.getElementById('projects-bg').style.backgroundImage = `url('${projects[0].imageUrl}')`;
-            document.getElementById('projects-subtitle').textContent = `${projects.length} Projects Available`;
+            const bgEl = document.getElementById('projects-bg');
+            const subEl = document.getElementById('projects-subtitle');
+            if (bgEl) bgEl.style.backgroundImage = `url('${projects[0].imageUrl}')`;
+            if (subEl) subEl.textContent = `${projects.length} Projects Available`;
         }
 
         widget.addEventListener('click', () => {
@@ -24,7 +29,8 @@ export async function initProjects() {
 
     } catch (error) {
         console.error('Failed to load projects:', error);
-        document.getElementById('projects-subtitle').textContent = 'Error loading projects';
+        const subEl = document.getElementById('projects-subtitle');
+        if (subEl) subEl.textContent = 'Error loading projects';
     }
 }
 

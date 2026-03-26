@@ -4,6 +4,8 @@ import { initExperience } from './experience.js';
 import initAnalytics from './analytics.js';
 import { initConsent } from './consent.js';
 
+console.log('[App] Initializing Bento Dashboard v2...');
+
 async function initApp() {
     await initMeta();
     initProjects();
@@ -31,10 +33,15 @@ async function initMeta() {
         const meta = await response.json();
         document.title = `${meta.name} - ${meta.tagline}`;
 
-        document.getElementById('nav-logo').textContent = meta.name;
-        document.getElementById('hero-name').textContent = meta.name;
-        document.getElementById('hero-tagline').textContent = meta.tagline;
-        document.getElementById('about-bio').textContent = meta.bio;
+        const navLogo = document.getElementById('nav-logo');
+        const heroName = document.getElementById('hero-name');
+        const heroTagline = document.getElementById('hero-tagline');
+        const aboutBio = document.getElementById('about-bio');
+
+        if (navLogo) navLogo.textContent = meta.name;
+        if (heroName) heroName.textContent = meta.name;
+        if (heroTagline) heroTagline.textContent = meta.tagline;
+        if (aboutBio) aboutBio.textContent = meta.bio;
 
         const socialsContainer = document.getElementById('hero-socials');
         if (socialsContainer && meta.links) {
@@ -78,6 +85,11 @@ function setupClock() {
     const timeEl = document.getElementById('local-time');
     const dateEl = document.getElementById('local-date');
 
+    if (!timeEl || !dateEl) {
+        console.warn('[Clock] Elements not found. Check HTML IDs.');
+        return;
+    }
+
     function updateTime() {
         const now = new Date();
         timeEl.textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
@@ -93,6 +105,12 @@ function setupModalSystem() {
     const closeBtn = document.getElementById('modal-close');
     const titleEl = document.getElementById('modal-title');
     const bodyEl = document.getElementById('modal-body');
+
+    if (!modal || !closeBtn || !titleEl || !bodyEl) {
+        console.warn('[Modal] Elements not found. Check HTML IDs.');
+        return;
+    }
+
     const modalContent = modal.querySelector('.transform');
 
     document.addEventListener('openModal', (e) => {
@@ -103,8 +121,10 @@ function setupModalSystem() {
         modal.classList.remove('opacity-0', 'pointer-events-none');
         modal.classList.add('opacity-100', 'pointer-events-auto');
 
-        modalContent.classList.remove('scale-95');
-        modalContent.classList.add('scale-100');
+        if (modalContent) {
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
 
         document.body.style.overflow = 'hidden';
     });
@@ -113,8 +133,10 @@ function setupModalSystem() {
         modal.classList.remove('opacity-100', 'pointer-events-auto');
         modal.classList.add('opacity-0', 'pointer-events-none');
 
-        modalContent.classList.remove('scale-100');
-        modalContent.classList.add('scale-95');
+        if (modalContent) {
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+        }
 
         setTimeout(() => { bodyEl.innerHTML = ''; }, 300);
         document.body.style.overflow = '';

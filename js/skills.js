@@ -1,7 +1,11 @@
 export async function initSkills() {
     const widget = document.getElementById('bento-skills');
     const summaryContainer = document.getElementById('skills-summary');
-    if (!widget || !summaryContainer) return;
+
+    if (!widget || !summaryContainer) {
+        console.warn('[Skills] Widget not found. Check HTML ID.');
+        return;
+    }
 
     try {
         const response = await fetch('./data/skills.json');

@@ -1,7 +1,11 @@
 export async function initExperience() {
     const widget = document.getElementById('bento-experience');
     const summaryContainer = document.getElementById('experience-summary');
-    if (!widget || !summaryContainer) return;
+
+    if (!widget || !summaryContainer) {
+        console.warn('[Experience] Widget not found. Check HTML ID.');
+        return;
+    }
 
     try {
         const response = await fetch('./data/experience.json');
