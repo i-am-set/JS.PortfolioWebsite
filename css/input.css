@@ -15,29 +15,29 @@
 
     @keyframes float {
         0%, 100% {
-            transform: translate(0px, 0px) scale(1);
+            transform: translate3d(0px, 0px, 0) scale(1);
         }
 
         33% {
-            transform: translate(5vw, 5vh) scale(1.1);
+            transform: translate3d(5vw, 5vh, 0) scale(1.1);
         }
 
         66% {
-            transform: translate(-5vw, 10vh) scale(0.9);
+            transform: translate3d(-5vw, 10vh, 0) scale(0.9);
         }
     }
 
     @keyframes float-reverse {
         0%, 100% {
-            transform: translate(0px, 0px) scale(1);
+            transform: translate3d(0px, 0px, 0) scale(1);
         }
 
         33% {
-            transform: translate(-5vw, -5vh) scale(1.05);
+            transform: translate3d(-5vw, -5vh, 0) scale(1.05);
         }
 
         66% {
-            transform: translate(5vw, -10vh) scale(0.95);
+            transform: translate3d(5vw, -10vh, 0) scale(0.95);
         }
     }
 
@@ -67,8 +67,11 @@
         background-color: var(--color-background);
         color: var(--color-text-primary);
         @apply font-sans antialiased;
-        /* Prevent scroll on desktop, allow on mobile */
         @apply lg:overflow-hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        backface-visibility: hidden;
     }
 
     ::selection {

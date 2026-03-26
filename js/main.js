@@ -104,16 +104,37 @@ function setupClock() {
         return;
     }
 
+    // Cache values to prevent DOM thrashing
+    let lastMyTime, lastMyDate, lastLocalTime, lastLocalDate;
+
     function updateTime() {
         const now = new Date();
 
         // My Time (EST/EDT - America/New_York)
-        myTimeEl.textContent = now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true });
-        myDateEl.textContent = now.toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric' });
+        const newMyTime = now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true });
+        const newMyDate = now.toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric' });
 
         // Your Time (Local)
-        localTimeEl.textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-        localDateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const newLocalTime = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        const newLocalDate = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+        // Only update DOM if the string has actually changed
+        if (newMyTime !== lastMyTime) {
+            myTimeEl.textContent = newMyTime;
+            lastMyTime = newMyTime;
+        }
+        if (newMyDate !== lastMyDate) {
+            myDateEl.textContent = newMyDate;
+            lastMyDate = newMyDate;
+        }
+        if (newLocalTime !== lastLocalTime) {
+            localTimeEl.textContent = newLocalTime;
+            lastLocalTime = newLocalTime;
+        }
+        if (newLocalDate !== lastLocalDate) {
+            localDateEl.textContent = newLocalDate;
+            lastLocalDate = newLocalDate;
+        }
     }
 
     updateTime();
