@@ -10,9 +10,7 @@ async function initApp() {
     initSkills();
     initExperience();
 
-    // Initialize Analytics FIRST so it is listening for the event
     initAnalytics();
-    // Initialize Consent SECOND so the event fires after the listener is ready
     initConsent();
 
     setupSmoothScrolling();

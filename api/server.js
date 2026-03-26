@@ -1,6 +1,3 @@
-// Self-hosted view counter API. Intentionally minimal.
-// Demonstrates server-side tag receiving without third-party platforms.
-
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -10,7 +7,6 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const VIEWS_FILE = path.join(__dirname, 'views.json');
 
-// UPDATED: Explicitly allow your live domain
 const allowedOrigins = [
     'http://localhost',
     'http://127.0.0.1:5500',
@@ -20,7 +16,6 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {

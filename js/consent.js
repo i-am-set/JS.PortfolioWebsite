@@ -143,7 +143,6 @@ function closeModal() {
     }
 }
 
-// Exported so main.js can control exactly when this runs
 export function initConsent() {
     const saved = getConsentCookie();
     if (saved) {

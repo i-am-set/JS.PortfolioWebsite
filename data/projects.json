@@ -2,10 +2,21 @@
   {
     "id": "multithreaded-world-gen",
     "title": "Multithreaded World Generation System",
-    "description": "Designed and implemented an asynchronous world generation system in C# and Python, applying for scalability. Debugged stability issues across parallel processes, performing root cause analysis to ensure reliable execution. Wrote validation tests to verify system behavior and maintain quality across iterative development.",
+    "description": "Designed an asynchronous C# world generation system in Godot for scalability. Debugged parallel process stability issues through root cause analysis to ensure consistent execution.",
     "technologies": [ "C#", "Python", "Multithreading" ],
     "imageUrl": "./assets/images/project-rime.jpg",
     "repoUrl": "https://github.com/i-am-set/G.Project-Rime",
+    "liveUrl": "",
+    "hasWebEmbed": false,
+    "embedPath": ""
+  },
+  {
+    "id": "xna-framework-game-project",
+    "title": "Custom Engine Betting Game",
+    "description": "Developed a data-driven auto-battler from scratch using C# and MonoGame. Architected a custom high-performance engine for 2D rendering and modular gameplay to avoid commercial engine overhead.",
+    "technologies": [ "C#", "HLSL", "XNA Framework", "Monogame" ],
+    "imageUrl": "./assets/images/project-vagabond.jpg",
+    "repoUrl": "https://github.com/i-am-set/CSharp.Project-Vagabond",
     "liveUrl": "",
     "hasWebEmbed": false,
     "embedPath": ""

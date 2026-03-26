@@ -24,7 +24,6 @@ function renderExperience(experienceData, container) {
             `<li class="text-text-muted text-base leading-relaxed relative before:content-['▹'] before:absolute before:-left-5 before:text-primary">${highlight}</li>`
         ).join('');
 
-        // Rewritten to use Flexbox for perfect dot alignment (no negative margins)
         const jobHtml = `
             <div class="flex gap-4 md:gap-6 group">
                 <!-- Timeline Line & Dot -->

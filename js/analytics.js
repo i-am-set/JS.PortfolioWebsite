@@ -1,6 +1,6 @@
 let hasInitialized = false;
 
-// Hardcoded to your live domain
+// live domain
 const API_BASE = 'https://sethgran.my.id';
 
 export default function init() {
@@ -35,7 +35,7 @@ async function incrementView() {
 
     } catch (error) {
         console.error('[Analytics] API Error:', error);
-        updateViewDisplay('API Error'); // No more local storage. If it fails, it tells you.
+        updateViewDisplay('API Error');
     }
 }
 

@@ -1,6 +1,5 @@
 import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs';
 
-// Set the worker source to match the CDN version
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
 
 const PDF_URL = './assets/resume.pdf';
@@ -27,11 +26,9 @@ export default async function initPdfViewer() {
         try {
             const page = await pdfDoc.getPage(num);
 
-            // Calculate scale to fit the container width (with a small padding margin)
             const containerWidth = container.clientWidth - 32;
             const unscaledViewport = page.getViewport({ scale: 1.0 });
 
-            // Determine scale, but cap it so it doesn't get massively oversized on ultrawide screens
             const calculatedScale = containerWidth / unscaledViewport.width;
             const finalScale = Math.min(calculatedScale, 1.5);
 
@@ -49,7 +46,6 @@ export default async function initPdfViewer() {
 
             pageIsRendering = false;
 
-            // If another page rendering is pending, render it now
             if (pageNumIsPending !== null) {
                 renderPage(pageNumIsPending);
                 pageNumIsPending = null;
@@ -85,11 +81,9 @@ export default async function initPdfViewer() {
         queueRenderPage(pageNum);
     };
 
-    // Attach Event Listeners
     if (prevBtn) prevBtn.addEventListener('click', onPrevPage);
     if (nextBtn) nextBtn.addEventListener('click', onNextPage);
 
-    // Handle Window Resize (Debounced)
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
@@ -100,7 +94,6 @@ export default async function initPdfViewer() {
         }, 200);
     });
 
-    // Fetch and Load the PDF Document
     try {
         pdfDoc = await pdfjsLib.getDocument(PDF_URL).promise;
         renderPage(pageNum);
