@@ -5,7 +5,7 @@ export async function initProjects() {
     try {
         const response = await fetch('./data/projects.json');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
+
         const projects = await response.json();
         if (!Array.isArray(projects)) throw new Error("Invalid data format");
 
@@ -17,28 +17,25 @@ export async function initProjects() {
 }
 
 function renderProjects(projects, container) {
-    container.innerHTML = ''; // Clear skeletons
+    container.innerHTML = '';
 
     projects.forEach(project => {
-        const tagsHtml = project.technologies.map(tech => 
+        const tagsHtml = project.technologies.map(tech =>
             `<span class="px-3 py-1 text-xs font-medium bg-secondary/50 text-accent rounded-full border border-secondary">${tech}</span>`
         ).join('');
 
         let linksHtml = '';
         if (project.repoUrl) {
-            linksHtml += `<a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-primary hover:text-accent transition-colors">GitHub Repo &rarr;</a>`;
+            linksHtml += `<a href="${project.repoUrl}" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-primary hover:text-accent transition-colors duration-150">GitHub Repo &rarr;</a>`;
         }
         if (project.liveUrl) {
-            linksHtml += `<a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-primary hover:text-accent transition-colors">Live Demo &rarr;</a>`;
-        }
-        if (project.hasWebEmbed) {
-            linksHtml += `<button data-embed="${project.id}" class="play-embed-btn text-sm font-medium text-background bg-primary px-3 py-1 rounded hover:bg-accent transition-colors">Play in Browser</button>`;
+            linksHtml += `<a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-primary hover:text-accent transition-colors duration-150">Live Demo &rarr;</a>`;
         }
 
         const cardHtml = `
             <div class="card flex flex-col h-full overflow-hidden p-0">
                 <div class="h-48 w-full overflow-hidden bg-background">
-                    <img src="${project.imageUrl}" alt="${project.title} screenshot" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxMTI1MjIiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZmlsbD0iIzhhYjRhNSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4='">
+                    <img src="${project.imageUrl}" alt="${project.title} screenshot" loading="lazy" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxMTI1MjIiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZmlsbD0iIzhhYjRhNSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4='">
                 </div>
                 <div class="p-6 flex flex-col flex-grow">
                     <h3 class="text-xl font-display font-bold text-text-primary mb-2">${project.title}</h3>
@@ -53,15 +50,6 @@ function renderProjects(projects, container) {
             </div>
         `;
         container.insertAdjacentHTML('beforeend', cardHtml);
-    });
-
-    // Attach event listeners to "Play in Browser" buttons
-    const playButtons = container.querySelectorAll('.play-embed-btn');
-    playButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const projectId = e.target.getAttribute('data-embed');
-            console.log(`[Web Embed Triggered] Project ID: ${projectId}. Wiring this up in a future phase.`);
-        });
     });
 }
 

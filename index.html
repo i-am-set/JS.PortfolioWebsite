@@ -17,33 +17,32 @@
 
     <link href="./css/output.css" rel="stylesheet">
 </head>
-<body class="bg-background text-text-primary font-sans antialiased flex flex-col min-h-screen overflow-x-hidden selection:bg-primary selection:text-background">
+<!-- Added inline styles to guarantee dark background on Safari even before CSS fully parses -->
+<body style="background-color: #091413; color: #E8F5F0;" class="bg-background text-text-primary font-sans antialiased flex flex-col min-h-screen overflow-x-hidden selection:bg-primary selection:text-background">
 
     <!-- Navigation -->
-    <header class="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-secondary z-50 transition-all duration-300">
+    <header class="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-secondary z-50 transition-all duration-150">
         <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="#" class="text-2xl font-display font-bold text-accent tracking-tight" id="nav-logo">
                 <div class="h-8 w-12 bg-surface animate-pulse rounded"></div>
             </a>
             <nav class="hidden md:flex gap-8 font-medium text-text-muted">
-                <a href="#hero" class="hover:text-primary transition-colors">About</a>
-                <a href="#projects" class="hover:text-primary transition-colors">Projects</a>
-                <a href="#skills" class="hover:text-primary transition-colors">Skills</a>
-                <a href="#experience" class="hover:text-primary transition-colors">Experience</a>
-                <a href="#resume" class="hover:text-primary transition-colors">Resume</a>
+                <a href="#hero" class="hover:text-primary transition-colors duration-150">About</a>
+                <a href="#projects" class="hover:text-primary transition-colors duration-150">Projects</a>
+                <a href="#skills" class="hover:text-primary transition-colors duration-150">Skills</a>
+                <a href="#experience" class="hover:text-primary transition-colors duration-150">Experience</a>
+                <a href="#resume" class="hover:text-primary transition-colors duration-150">Resume</a>
             </nav>
-            <!-- Mobile Menu Button -->
             <button id="mobile-menu-btn" class="md:hidden text-text-primary focus:outline-none" aria-label="Toggle Menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
             </button>
         </div>
-        <!-- Mobile Dropdown Nav -->
         <nav id="mobile-nav" class="hidden md:hidden bg-surface border-b border-secondary px-6 py-4 flex-col gap-4 font-medium text-text-muted shadow-lg">
-            <a href="#hero" class="mobile-link hover:text-primary transition-colors">About</a>
-            <a href="#projects" class="mobile-link hover:text-primary transition-colors">Projects</a>
-            <a href="#skills" class="mobile-link hover:text-primary transition-colors">Skills</a>
-            <a href="#experience" class="mobile-link hover:text-primary transition-colors">Experience</a>
-            <a href="#resume" class="mobile-link hover:text-primary transition-colors">Resume</a>
+            <a href="#hero" class="mobile-link hover:text-primary transition-colors duration-150">About</a>
+            <a href="#projects" class="mobile-link hover:text-primary transition-colors duration-150">Projects</a>
+            <a href="#skills" class="mobile-link hover:text-primary transition-colors duration-150">Skills</a>
+            <a href="#experience" class="mobile-link hover:text-primary transition-colors duration-150">Experience</a>
+            <a href="#resume" class="mobile-link hover:text-primary transition-colors duration-150">Resume</a>
         </nav>
     </header>
 
@@ -72,6 +71,8 @@
 
             <div class="flex flex-wrap gap-4" id="hero-actions">
                 <a href="#projects" class="btn-primary">View Projects</a>
+                <a href="#skills" class="btn-ghost">View Skills</a>
+                <a href="#experience" class="btn-ghost">View Experience</a>
                 <a href="#resume" class="btn-ghost">View Resume</a>
             </div>
         </section>
@@ -80,7 +81,6 @@
         <section id="projects" data-page-section="projects" class="max-w-6xl mx-auto px-6 py-24">
             <h2 class="section-heading">Featured Projects</h2>
             <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Skeletons -->
                 <div class="card animate-pulse h-96 flex flex-col gap-4">
                     <div class="h-48 bg-background rounded w-full"></div>
                     <div class="h-6 bg-background rounded w-3/4"></div>
@@ -93,7 +93,6 @@
         <section id="skills" data-page-section="skills" class="max-w-6xl mx-auto px-6 py-24 bg-surface/30 rounded-3xl my-12">
             <h2 class="section-heading">Technical Skills</h2>
             <div id="skills-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Skeletons -->
                 <div class="space-y-4"><div class="h-6 w-32 bg-surface animate-pulse rounded"></div><div class="h-32 w-full bg-surface animate-pulse rounded"></div></div>
             </div>
         </section>
@@ -101,17 +100,18 @@
         <!-- 4. Experience Section -->
         <section id="experience" data-page-section="experience" class="max-w-4xl mx-auto px-6 py-24">
             <h2 class="section-heading">Experience</h2>
-            <div id="experience-container" class="space-y-12 border-l-2 border-secondary pl-6 md:pl-8 ml-2 md:ml-4">
-                <!-- Skeletons -->
-                <div class="space-y-4 relative">
-                    <div class="absolute -left-[33px] md:-left-[41px] top-0 h-4 w-4 rounded-full bg-primary"></div>
-                    <div class="h-6 w-48 bg-surface animate-pulse rounded"></div>
-                    <div class="h-24 w-full bg-surface animate-pulse rounded"></div>
+            <div id="experience-container" class="space-y-8">
+                <div class="flex gap-4 animate-pulse">
+                    <div class="w-3 h-3 rounded-full bg-primary mt-1.5 shrink-0"></div>
+                    <div class="space-y-4 w-full">
+                        <div class="h-6 w-48 bg-surface rounded"></div>
+                        <div class="h-24 w-full bg-surface rounded"></div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 5. Resume Section (Simplified for Mobile Performance) -->
+        <!-- 5. Resume Section -->
         <section id="resume" data-page-section="resume" class="max-w-4xl mx-auto px-6 py-24 text-center">
             <h2 class="section-heading mb-4">Resume</h2>
             <p class="text-text-muted mb-8 max-w-xl mx-auto">View my full qualifications, experience, and education history.</p>
@@ -126,27 +126,16 @@
             </div>
         </section>
 
-        <!-- 6. Privacy & Consent Section -->
-        <section id="privacy" data-page-section="privacy" class="max-w-6xl mx-auto px-6 py-24 border-t border-secondary/50 mt-12">
-            <h2 class="section-heading">Privacy & Consent</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="card flex flex-col">
-                    <h3 class="text-lg font-display font-bold text-text-primary mb-3">What This Site Collects</h3>
-                    <p class="text-sm text-text-muted leading-relaxed">Page view counts only. No names, IP addresses, or personal data are stored.</p>
-                </div>
-                <div class="card flex flex-col">
-                    <h3 class="text-lg font-display font-bold text-text-primary mb-3">How Consent Works</h3>
-                    <p class="text-sm text-text-muted leading-relaxed mb-6 flex-grow">Consent is stored in a first-party cookie. It expires after 180 days.</p>
-                    <button data-consent-preferences class="btn-ghost text-sm px-4 py-2 w-full mt-auto">Manage Preferences</button>
-                </div>
-                <div class="card flex flex-col">
-                    <h3 class="text-lg font-display font-bold text-text-primary mb-4">Cookie Categories</h3>
-                    <div class="space-y-4 text-sm flex-grow">
-                        <div><span class="font-medium text-accent block mb-1">Necessary:</span><span class="text-text-muted">Required for the site to function.</span></div>
-                        <div class="border-t border-secondary/50 pt-4"><span class="font-medium text-accent block mb-1">Analytics:</span><span class="text-text-muted">Optional. Controls the page view counter.</span></div>
-                    </div>
-                </div>
-            </div>
+        <!-- 6. Privacy & Consent Section (Simplified) -->
+        <section id="privacy" data-page-section="privacy" class="max-w-3xl mx-auto px-6 py-16 border-t border-secondary/50 mt-12 text-center">
+            <h2 class="text-2xl font-display font-bold text-text-primary mb-4">Privacy & Cookie Policy</h2>
+            <p class="text-text-muted leading-relaxed mb-4">
+                This website respects your privacy. We only collect basic page view counts to see how many people visit the portfolio. No personal data, IP addresses, or tracking identifiers are stored or shared with third parties.
+            </p>
+            <p class="text-text-muted leading-relaxed mb-8">
+                Your consent preferences are saved locally in your browser for 180 days. You can update your preferences at any time.
+            </p>
+            <button data-consent-preferences class="btn-ghost text-sm px-6 py-2">Manage Cookie Preferences</button>
         </section>
 
     </main>
@@ -157,11 +146,14 @@
             <p class="text-text-muted text-sm flex items-center gap-3">
                 <span>© 2026 <span id="footer-name">Seth Gran</span>.</span>
                 <span class="hidden md:inline text-secondary">|</span>
-                <span id="view-count" class="font-mono text-xs bg-surface px-2 py-1 rounded border border-secondary" title="Page Views">Views: —</span>
+                <span id="view-count" class="font-mono text-xs bg-surface px-2 py-1 rounded border border-secondary" title="Page Views">Views: 0</span>
             </p>
             <div class="flex gap-6" id="footer-links"></div>
         </div>
     </footer>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none"></div>
 
     <div id="consent-container"></div>
 

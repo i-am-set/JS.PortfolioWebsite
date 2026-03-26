@@ -2,25 +2,17 @@ import { initProjects } from './projects.js';
 import { initSkills } from './skills.js';
 import { initExperience } from './experience.js';
 import initAnalytics from './analytics.js';
-// Removed initPdfViewer to drastically improve mobile performance and simplify UI
 
 async function initApp() {
-    console.log("[App] Initialization started...");
-
     await initMeta();
-
-    console.log("[App] Initializing data modules...");
     initProjects();
     initSkills();
     initExperience();
-
     initAnalytics();
 
     setupSmoothScrolling();
     setupIntersectionObserver();
     setupMobileMenu();
-
-    console.log("[App] Initialization complete.");
 }
 
 if (document.readyState === 'loading') {
@@ -56,13 +48,49 @@ async function initMeta() {
         const footerLinksContainer = document.getElementById('footer-links');
         if (footerLinksContainer && meta.links) {
             footerLinksContainer.innerHTML = '';
-            if (meta.links.github) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.github}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors">GitHub</a>`);
-            if (meta.links.linkedin) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.linkedin}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors">LinkedIn</a>`);
-            if (meta.links.email) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="mailto:${meta.links.email}" class="text-text-muted hover:text-primary transition-colors">Email</a>`);
+            if (meta.links.github) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.github}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-150">GitHub</a>`);
+            if (meta.links.linkedin) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.linkedin}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-150">LinkedIn</a>`);
+
+            // Email Copy to Clipboard Logic
+            if (meta.links.email) {
+                footerLinksContainer.insertAdjacentHTML('beforeend', `<button id="copy-email-btn" data-email="${meta.links.email}" class="text-text-muted hover:text-primary transition-colors duration-150 cursor-pointer">Email</button>`);
+
+                document.getElementById('copy-email-btn').addEventListener('click', function () {
+                    const email = this.getAttribute('data-email');
+                    navigator.clipboard.writeText(email).then(() => {
+                        showToast('Email copied to clipboard!');
+                    }).catch(err => {
+                        console.error('Failed to copy email: ', err);
+                        showToast('Failed to copy email.');
+                    });
+                });
+            }
         }
     } catch (error) {
         console.error('[Meta] Error initializing meta data:', error);
     }
+}
+
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'bg-primary text-background px-6 py-3 rounded-full shadow-lg font-medium text-sm transform translate-y-10 opacity-0 transition-all duration-300 ease-out';
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    // Animate in
+    requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-10', 'opacity-0');
+    });
+
+    // Animate out and remove
+    setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
 function setupMobileMenu() {
