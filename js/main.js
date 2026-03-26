@@ -1,11 +1,11 @@
 // Cache busters added to imports to prevent browser from using old files
-import { initProjects } from './projects.js?v=5';
-import { initSkills } from './skills.js?v=5';
-import { initExperience } from './experience.js?v=5';
-import initAnalytics from './analytics.js?v=5';
-import { initConsent } from './consent.js?v=5';
+import { initProjects } from './projects.js?v=6';
+import { initSkills } from './skills.js?v=6';
+import { initExperience } from './experience.js?v=6';
+import initAnalytics from './analytics.js?v=6';
+import { initConsent } from './consent.js?v=6';
 
-console.log('[App] Initializing Bento Dashboard v5...');
+console.log('[App] Initializing Bento Dashboard v6...');
 
 async function initApp() {
     await initMeta();
@@ -38,11 +38,17 @@ async function initMeta() {
         const heroName = document.getElementById('hero-name');
         const heroTagline = document.getElementById('hero-tagline');
         const aboutBio = document.getElementById('about-bio');
+        const heroEmailLink = document.getElementById('hero-email-link');
 
         if (navLogo) navLogo.textContent = meta.name;
         if (heroName) heroName.textContent = meta.name;
         if (heroTagline) heroTagline.textContent = meta.tagline;
         if (aboutBio) aboutBio.textContent = meta.bio;
+
+        if (heroEmailLink && meta.links && meta.links.email) {
+            heroEmailLink.textContent = meta.links.email;
+            heroEmailLink.href = `mailto:${meta.links.email}`;
+        }
 
         const socialsContainer = document.getElementById('hero-socials');
         if (socialsContainer && meta.links) {
