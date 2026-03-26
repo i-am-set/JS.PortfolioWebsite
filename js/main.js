@@ -13,10 +13,8 @@ async function initApp() {
     initAnalytics();
     initConsent();
 
-    setupSmoothScrolling();
-    setupIntersectionObserver();
-    setupMobileMenu();
-    setupParallax();
+    setupClock();
+    setupModalSystem();
 }
 
 if (document.readyState === 'loading') {
@@ -31,40 +29,42 @@ async function initMeta() {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const meta = await response.json();
-
         document.title = `${meta.name} - ${meta.tagline}`;
 
-        const navLogo = document.getElementById('nav-logo');
-        if (navLogo) navLogo.textContent = meta.name;
+        document.getElementById('nav-logo').textContent = meta.name;
+        document.getElementById('hero-name').textContent = meta.name;
+        document.getElementById('hero-tagline').textContent = meta.tagline;
+        document.getElementById('about-bio').textContent = meta.bio;
 
-        const footerName = document.getElementById('footer-name');
-        if (footerName) footerName.textContent = meta.name;
+        const socialsContainer = document.getElementById('hero-socials');
+        if (socialsContainer && meta.links) {
+            socialsContainer.innerHTML = '';
 
-        const heroName = document.getElementById('hero-name');
-        if (heroName) heroName.textContent = meta.name;
+            const iconBtnClass = "w-10 h-10 rounded-full border border-secondary/50 flex items-center justify-center text-text-muted transition-all duration-300 hover:bg-primary hover:text-background hover:border-primary hover:scale-110 shrink-0 cursor-pointer";
 
-        const heroTagline = document.getElementById('hero-tagline');
-        if (heroTagline) heroTagline.textContent = meta.tagline;
-
-        const heroBio = document.getElementById('hero-bio');
-        if (heroBio) heroBio.textContent = meta.bio;
-
-        const footerLinksContainer = document.getElementById('footer-links');
-        if (footerLinksContainer && meta.links) {
-            footerLinksContainer.innerHTML = '';
-            if (meta.links.github) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.github}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-300">GitHub</a>`);
-            if (meta.links.linkedin) footerLinksContainer.insertAdjacentHTML('beforeend', `<a href="${meta.links.linkedin}" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors duration-300">LinkedIn</a>`);
-
+            if (meta.links.github) {
+                socialsContainer.insertAdjacentHTML('beforeend', `
+                    <a href="${meta.links.github}" target="_blank" rel="noopener noreferrer" class="${iconBtnClass}" title="GitHub">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                    </a>
+                `);
+            }
+            if (meta.links.linkedin) {
+                socialsContainer.insertAdjacentHTML('beforeend', `
+                    <a href="${meta.links.linkedin}" target="_blank" rel="noopener noreferrer" class="${iconBtnClass}" title="LinkedIn">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                `);
+            }
             if (meta.links.email) {
-                footerLinksContainer.insertAdjacentHTML('beforeend', `<button id="copy-email-btn" data-email="${meta.links.email}" class="text-text-muted hover:text-primary transition-colors duration-300 cursor-pointer">Email</button>`);
-
+                socialsContainer.insertAdjacentHTML('beforeend', `
+                    <button id="copy-email-btn" data-email="${meta.links.email}" class="${iconBtnClass}" title="Copy Email">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </button>
+                `);
                 document.getElementById('copy-email-btn').addEventListener('click', function () {
-                    const email = this.getAttribute('data-email');
-                    navigator.clipboard.writeText(email).then(() => {
+                    navigator.clipboard.writeText(this.getAttribute('data-email')).then(() => {
                         showToast('Email copied to clipboard!');
-                    }).catch(err => {
-                        console.error('Failed to copy email: ', err);
-                        showToast('Failed to copy email.');
                     });
                 });
             }
@@ -74,113 +74,74 @@ async function initMeta() {
     }
 }
 
-function showToast(message) {
+function setupClock() {
+    const timeEl = document.getElementById('local-time');
+    const dateEl = document.getElementById('local-date');
+
+    function updateTime() {
+        const now = new Date();
+        timeEl.textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+}
+
+function setupModalSystem() {
+    const modal = document.getElementById('global-modal');
+    const closeBtn = document.getElementById('modal-close');
+    const titleEl = document.getElementById('modal-title');
+    const bodyEl = document.getElementById('modal-body');
+    const modalContent = modal.querySelector('.transform');
+
+    document.addEventListener('openModal', (e) => {
+        const { title, content } = e.detail;
+        titleEl.textContent = title;
+        bodyEl.innerHTML = content;
+
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+
+        modalContent.classList.remove('scale-95');
+        modalContent.classList.add('scale-100');
+
+        document.body.style.overflow = 'hidden';
+    });
+
+    function closeModal() {
+        modal.classList.remove('opacity-100', 'pointer-events-auto');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+
+        setTimeout(() => { bodyEl.innerHTML = ''; }, 300);
+        document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('opacity-100')) closeModal();
+    });
+}
+
+export function showToast(message) {
     const container = document.getElementById('toast-container');
     if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = 'bg-primary/90 backdrop-blur-md border border-accent/20 text-background px-6 py-3 rounded-full shadow-[0_8px_30px_rgba(64,138,113,0.3)] font-medium text-sm transform translate-y-10 opacity-0 transition-all duration-300 ease-out';
+    toast.className = 'bg-primary/90 backdrop-blur-md border border-accent/20 text-background px-6 py-3 rounded-full shadow-lg font-medium text-sm transform translate-y-10 opacity-0 transition-all duration-300 ease-out';
     toast.textContent = message;
 
     container.appendChild(toast);
-
-    requestAnimationFrame(() => {
-        toast.classList.remove('translate-y-10', 'opacity-0');
-    });
+    requestAnimationFrame(() => toast.classList.remove('translate-y-10', 'opacity-0'));
 
     setTimeout(() => {
         toast.classList.add('translate-y-10', 'opacity-0');
         setTimeout(() => toast.remove(), 300);
     }, 3000);
-}
-
-function setupMobileMenu() {
-    const btn = document.getElementById('mobile-menu-btn');
-    const nav = document.getElementById('mobile-nav');
-    const links = document.querySelectorAll('.mobile-link');
-
-    if (btn && nav) {
-        btn.addEventListener('click', () => {
-            nav.classList.toggle('hidden');
-            nav.classList.toggle('flex');
-        });
-
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                nav.classList.add('hidden');
-                nav.classList.remove('flex');
-            });
-        });
-    }
-}
-
-function setupSmoothScrolling() {
-    const navLinks = document.querySelectorAll('nav a[href^="#"], #hero-actions a[href^="#"]');
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
-            const targetElement = document.getElementById(targetId);
-
-            if (targetElement) {
-                const headerOffset = 100;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
-function setupIntersectionObserver() {
-    const sections = document.querySelectorAll('section[data-page-section]');
-    sections.forEach(section => section.classList.add('fade-in-section'));
-
-    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Reveal parent section
-                entry.target.classList.add('is-visible');
-
-                // Stagger reveal children elements
-                const staggerItems = entry.target.querySelectorAll('.stagger-item');
-                staggerItems.forEach((item, index) => {
-                    setTimeout(() => {
-                        item.classList.add('is-visible');
-                    }, index * 150); // 150ms delay between each item
-                });
-
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    sections.forEach(section => observer.observe(section));
-}
-
-function setupParallax() {
-    const blobs = document.querySelectorAll('.parallax-blob');
-    let ticking = false;
-
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                const scrolled = window.scrollY;
-                blobs.forEach((blob, index) => {
-                    // Alternate directions for blobs
-                    const speed = index % 2 === 0 ? 0.15 : -0.1;
-                    blob.style.transform = `translateY(${scrolled * speed}px)`;
-                });
-                ticking = false;
-            });
-            ticking = true;
-        }
-    }, { passive: true });
 }

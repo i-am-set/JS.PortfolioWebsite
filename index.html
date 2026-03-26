@@ -13,12 +13,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- 1. Try to load the compiled CSS file -->
     <link href="./css/output.css" rel="stylesheet">
-
-    <!-- 2. BULLETPROOF FALLBACK: If output.css is missing, this guarantees styling works everywhere -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
         @theme {
@@ -30,152 +27,183 @@
             --color-text-primary: #E8F5F0;
             --color-text-muted: #8AB4A5;
             --font-display: "Outfit", "Inter", system-ui, sans-serif;
+            --animate-float-slow: float 15s ease-in-out infinite;
+            --animate-float-fast: float-reverse 12s ease-in-out infinite;
+            --animate-pulse-glow: pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+            @keyframes float {
+                0%, 100% {
+                    transform: translate(0px, 0px) scale(1);
+                }
+
+                33% {
+                    transform: translate(5vw, 5vh) scale(1.1);
+                }
+
+                66% {
+                    transform: translate(-5vw, 10vh) scale(0.9);
+                }
+            }
+
+            @keyframes float-reverse {
+                0%, 100% {
+                    transform: translate(0px, 0px) scale(1);
+                }
+
+                33% {
+                    transform: translate(-5vw, -5vh) scale(1.05);
+                }
+
+                66% {
+                    transform: translate(5vw, -10vh) scale(0.95);
+                }
+            }
+
+            @keyframes pulse-glow {
+                0%, 100% {
+                    opacity: 0.5;
+                }
+
+                50% {
+                    opacity: 1;
+                }
+            }
         }
     </style>
 </head>
-<body style="background-color: #091413; color: #E8F5F0;" class="bg-background text-text-primary font-sans antialiased flex flex-col min-h-screen overflow-x-hidden selection:bg-primary selection:text-background relative">
+<body class="relative min-h-screen flex flex-col bg-background text-text-primary font-sans antialiased lg:overflow-hidden">
 
-    <!-- Ambient Background Blobs -->
+    <!-- Backgrounds -->
+    <div class="fixed inset-0 z-[-3] bg-background"></div>
+    <div class="fixed inset-0 z-[-2]" style="background-image: linear-gradient(to right, rgba(40, 90, 72, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(40, 90, 72, 0.05) 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+    <!-- Floating Ambient Lights -->
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <div class="parallax-blob absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] rounded-full bg-primary/10 blur-[100px] animate-blob mix-blend-screen"></div>
-        <div class="parallax-blob absolute top-[40%] right-[-10%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] rounded-full bg-accent/10 blur-[100px] animate-blob animation-delay-2000 mix-blend-screen"></div>
+        <div class="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] rounded-full bg-primary/10 blur-[120px] animate-float-slow mix-blend-screen"></div>
+        <div class="absolute bottom-[10%] right-[10%] w-[30vw] h-[30vw] max-w-[400px] max-h-[400px] rounded-full bg-accent/10 blur-[100px] animate-float-fast mix-blend-screen"></div>
     </div>
 
-    <!-- Navigation -->
-    <header class="fixed top-0 w-full glass-panel z-50 transition-all duration-300">
-        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="#" class="text-2xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary tracking-tight hover:opacity-80 transition-opacity" id="nav-logo">
-                <div class="h-8 w-12 bg-surface animate-pulse rounded"></div>
+    <!-- Main Bento Dashboard -->
+    <main class="flex-grow p-4 md:p-6 lg:p-8 flex flex-col lg:h-screen max-w-[1600px] mx-auto w-full">
+
+        <!-- Minimal Header -->
+        <header class="flex justify-between items-center mb-6 shrink-0">
+            <div class="text-xl font-display font-bold text-text-primary tracking-tight flex items-center gap-3">
+                <div class="w-3 h-3 rounded-full bg-primary animate-pulse-glow"></div>
+                <span id="nav-logo">Loading...</span>
+            </div>
+            <div class="text-sm text-text-muted font-mono flex items-center gap-4">
+                <span id="view-count" class="hidden md:inline-block bg-surface/50 px-3 py-1 rounded-full border border-secondary/30">Views: 0</span>
+                <button data-consent-preferences class="hover:text-primary transition-colors cursor-pointer">Privacy</button>
+            </div>
+        </header>
+
+        <!-- Bento Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 flex-grow auto-rows-[200px] lg:auto-rows-fr">
+
+            <!-- 1. Hero (Spans 2x2) -->
+            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] lg:col-span-2 lg:row-span-2 justify-between">
+                <div>
+                    <p class="text-primary font-medium mb-2 tracking-widest uppercase text-xs">Welcome</p>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-text-primary mb-4 leading-tight">
+                        Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary" id="hero-name">...</span>
+                    </h1>
+                    <h2 class="text-xl md:text-2xl text-text-muted font-light" id="hero-tagline">Software Engineer</h2>
+                </div>
+                <div class="mt-8 flex gap-3" id="hero-socials">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- 2. About (Spans 1x2) -->
+            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] lg:col-span-1 lg:row-span-2">
+                <h3 class="text-lg font-display font-bold text-text-primary mb-4 flex items-center gap-2 shrink-0">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    About Me
+                </h3>
+                <div class="text-text-muted text-sm leading-relaxed overflow-y-auto pr-2 flex-grow" id="about-bio">
+                    Loading bio...
+                </div>
+            </div>
+
+            <!-- 3. Time Widget (Spans 1x1) -->
+            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] lg:col-span-1 lg:row-span-1 justify-center items-center text-center">
+                <p class="text-text-muted text-xs uppercase tracking-widest mb-2">Local Time</p>
+                <div class="text-4xl md:text-5xl font-display font-bold text-text-primary tracking-tight mb-1" id="local-time">--:--</div>
+                <p class="text-primary text-sm font-mono" id="local-date">Loading...</p>
+            </div>
+
+            <!-- 4. Resume Widget (Spans 1x1) -->
+            <a href="./assets/resume.pdf" target="_blank" class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] cursor-pointer group hover:-translate-y-1 lg:col-span-1 lg:row-span-1 justify-center items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary transition-colors duration-300">
+                    <svg class="w-8 h-8 text-primary group-hover:text-background transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </div>
+                <h3 class="text-lg font-display font-bold text-text-primary">Resume</h3>
+                <p class="text-text-muted text-xs mt-1">View PDF</p>
             </a>
-            <nav class="hidden md:flex gap-8 font-medium text-text-muted">
-                <a href="#hero" class="hover:text-primary transition-colors duration-300">About</a>
-                <a href="#projects" class="hover:text-primary transition-colors duration-300">Projects</a>
-                <a href="#skills" class="hover:text-primary transition-colors duration-300">Skills</a>
-                <a href="#experience" class="hover:text-primary transition-colors duration-300">Experience</a>
-                <a href="#resume" class="hover:text-primary transition-colors duration-300">Resume</a>
-            </nav>
-            <button id="mobile-menu-btn" class="md:hidden text-text-primary focus:outline-none hover:text-primary transition-colors" aria-label="Toggle Menu">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
-        </div>
-        <nav id="mobile-nav" class="hidden md:hidden glass-panel border-t border-secondary/50 px-6 py-4 flex-col gap-4 font-medium text-text-muted shadow-2xl absolute w-full">
-            <a href="#hero" class="mobile-link hover:text-primary transition-colors duration-300">About</a>
-            <a href="#projects" class="mobile-link hover:text-primary transition-colors duration-300">Projects</a>
-            <a href="#skills" class="mobile-link hover:text-primary transition-colors duration-300">Skills</a>
-            <a href="#experience" class="mobile-link hover:text-primary transition-colors duration-300">Experience</a>
-            <a href="#resume" class="mobile-link hover:text-primary transition-colors duration-300">Resume</a>
-        </nav>
-    </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow pt-20">
-
-        <!-- 1. Hero / About Section -->
-        <section id="hero" data-page-section="hero" class="max-w-6xl mx-auto px-6 py-24 md:py-32 flex flex-col justify-center min-h-[85svh] relative z-10">
-            <p class="text-primary font-medium mb-6 tracking-widest uppercase text-sm flex items-center gap-4 before:content-[''] before:w-8 before:h-[2px] before:bg-primary">Hello, my name is</p>
-
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-text-primary mb-4 tracking-tight" id="hero-name">
-                <div class="h-16 w-64 bg-surface animate-pulse rounded"></div>
-            </h1>
-
-            <h2 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-gradient mb-8 pb-2" id="hero-tagline">
-                <div class="h-14 w-3/4 max-w-2xl bg-surface animate-pulse rounded"></div>
-            </h2>
-
-            <div class="max-w-2xl text-lg md:text-xl text-text-muted mb-12 leading-relaxed font-light" id="hero-bio">
-                <div class="space-y-3">
-                    <div class="h-4 w-full bg-surface animate-pulse rounded"></div>
-                    <div class="h-4 w-5/6 bg-surface animate-pulse rounded"></div>
-                    <div class="h-4 w-4/6 bg-surface animate-pulse rounded"></div>
+            <!-- 5. Experience Widget (Spans 1x1) -->
+            <div id="bento-experience" class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] cursor-pointer group hover:-translate-y-1 lg:col-span-1 lg:row-span-1 justify-between">
+                <div class="flex justify-between items-start">
+                    <h3 class="text-lg font-display font-bold text-text-primary">Experience</h3>
+                    <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+                <div id="experience-summary" class="mt-4">
+                    <div class="h-4 w-3/4 bg-surface animate-pulse rounded mb-2"></div>
+                    <div class="h-3 w-1/2 bg-surface animate-pulse rounded"></div>
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-4" id="hero-actions">
-                <a href="#projects" class="btn-primary">View Projects</a>
-                <a href="#skills" class="btn-ghost">View Skills</a>
-                <a href="#experience" class="btn-ghost">View Experience</a>
-                <a href="#resume" class="btn-ghost">View Resume</a>
-            </div>
-        </section>
-
-        <!-- 2. Projects Section -->
-        <section id="projects" data-page-section="projects" class="max-w-6xl mx-auto px-6 py-24 relative z-10">
-            <h2 class="section-heading">Featured Projects</h2>
-            <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="card animate-pulse h-96 flex flex-col gap-4">
-                    <div class="h-48 bg-background rounded w-full"></div>
-                    <div class="h-6 bg-background rounded w-3/4"></div>
-                    <div class="h-4 bg-background rounded w-full"></div>
+            <!-- 6. Skills Widget (Spans 1x1) -->
+            <div id="bento-skills" class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden transition-all duration-300 hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] cursor-pointer group hover:-translate-y-1 lg:col-span-1 lg:row-span-1 justify-between">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-lg font-display font-bold text-text-primary">Top Skills</h3>
+                    <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
+                <div id="skills-summary" class="flex flex-wrap gap-2 overflow-hidden h-full content-start">
+                    <!-- Injected via JS -->
                 </div>
             </div>
-        </section>
 
-        <!-- 3. Skills Section -->
-        <section id="skills" data-page-section="skills" class="max-w-6xl mx-auto px-6 py-24 glass-panel rounded-3xl my-12 relative z-10">
-            <h2 class="section-heading">Technical Skills</h2>
-            <div id="skills-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                <div class="space-y-4"><div class="h-6 w-32 bg-surface animate-pulse rounded"></div><div class="h-32 w-full bg-surface animate-pulse rounded"></div></div>
-            </div>
-        </section>
+            <!-- 7. Projects Widget (Spans 2x1) -->
+            <div id="bento-projects" class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl flex flex-col relative overflow-hidden transition-all duration-300 hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(64,138,113,0.1)] cursor-pointer group hover:-translate-y-1 lg:col-span-2 lg:row-span-1 p-0">
+                <div class="absolute inset-0 bg-surface z-10 opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+                <div id="projects-bg" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-105 z-0"></div>
 
-        <!-- 4. Experience Section -->
-        <section id="experience" data-page-section="experience" class="max-w-4xl mx-auto px-6 py-24 relative z-10">
-            <h2 class="section-heading">Experience</h2>
-            <div id="experience-container" class="space-y-12 border-l-2 border-secondary/30 ml-3 md:ml-0 md:border-none">
-                <div class="flex gap-4 animate-pulse">
-                    <div class="w-3 h-3 rounded-full bg-primary mt-1.5 shrink-0"></div>
-                    <div class="space-y-4 w-full">
-                        <div class="h-6 w-48 bg-surface rounded"></div>
-                        <div class="h-24 w-full bg-surface rounded"></div>
+                <div class="relative z-20 p-6 md:p-8 h-full flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <span class="px-3 py-1 bg-background/80 backdrop-blur-md border border-secondary/50 rounded-full text-xs font-medium text-accent">Featured Work</span>
+                        <div class="w-8 h-8 rounded-full bg-background/80 backdrop-blur-md flex items-center justify-center border border-secondary/50 group-hover:bg-primary group-hover:border-primary transition-colors">
+                            <svg class="w-4 h-4 text-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-display font-bold text-text-primary mb-1" id="projects-title">Projects</h3>
+                        <p class="text-text-muted text-sm" id="projects-subtitle">Loading...</p>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- 5. Resume Section -->
-        <section id="resume" data-page-section="resume" class="max-w-4xl mx-auto px-6 py-24 text-center relative z-10">
-            <h2 class="section-heading mb-4">Resume</h2>
-            <p class="text-text-muted mb-10 max-w-xl mx-auto text-lg">View my full qualifications, experience, and education history.</p>
-
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <a href="./assets/resume.pdf" target="_blank" rel="noopener noreferrer" class="btn-primary w-full sm:w-auto shadow-[0_0_30px_rgba(64,138,113,0.2)]">
-                    Open PDF Resume
-                </a>
-                <a href="./assets/resume.pdf" download class="btn-ghost w-full sm:w-auto">
-                    Download PDF
-                </a>
-            </div>
-        </section>
-
-        <!-- 6. Privacy & Consent Section -->
-        <section id="privacy" data-page-section="privacy" class="max-w-3xl mx-auto px-6 pt-16 pb-24 border-t border-secondary/30 mt-12 text-center relative z-10">
-            <h2 class="text-2xl font-display font-bold text-text-primary mb-6">Privacy & Cookie Policy</h2>
-            <p class="text-text-muted leading-relaxed mb-4">
-                This website respects your privacy. It only collects basic page view counts to see how many people visit the portfolio. No personal data, IP addresses, or tracking identifiers are stored or shared with third parties.
-            </p>
-            <p class="text-text-muted leading-relaxed mb-10">
-                Your consent preferences are saved locally in your browser for 180 days. You can update your preferences at any time.
-            </p>
-            <button data-consent-preferences class="btn-ghost text-sm px-6 py-2">Manage Cookie Preferences</button>
-        </section>
-
+        </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="glass-panel border-t border-secondary/50 py-8 mt-auto relative z-10">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-text-muted text-sm flex items-center gap-3">
-                <span>© 2026 <span id="footer-name">Seth Gran</span>.</span>
-                <span class="hidden md:inline text-secondary">|</span>
-                <span id="view-count" class="font-mono text-xs bg-surface/80 px-3 py-1.5 rounded-md border border-secondary/50 shadow-inner" title="Page Views">Views: 0</span>
-            </p>
-            <div class="flex gap-6" id="footer-links"></div>
+    <!-- Global Modal Overlay -->
+    <div id="global-modal" class="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-surface border border-secondary/50 rounded-3xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center p-6 border-b border-secondary/30 shrink-0">
+                <h2 id="modal-title" class="text-2xl font-display font-bold text-text-primary">Title</h2>
+                <button id="modal-close" class="text-text-muted hover:text-primary transition-colors p-2 rounded-full hover:bg-surface cursor-pointer">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div id="modal-body" class="p-6 overflow-y-auto flex-grow">
+                <!-- Content injected dynamically -->
+            </div>
         </div>
-    </footer>
+    </div>
 
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none"></div>
-
     <div id="consent-container"></div>
 
     <script type="module" src="./js/main.js" defer></script>
