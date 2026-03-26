@@ -9,7 +9,6 @@
     --color-text-primary: #E8F5F0;
     --color-text-muted: #8AB4A5;
     --font-display: "Outfit", "Inter", system-ui, sans-serif;
-    /* Removed heavy animations to prevent repaints and flickering */
 }
 
 :root {
@@ -25,18 +24,25 @@
 @layer base {
     body {
         background-color: var(--color-background);
-        /* Added a static radial gradient to replace the moving blobs, keeping the aesthetic without the performance cost */
         background-image: radial-gradient(circle at 15% 50%, rgba(40, 138, 113, 0.08), transparent 35%), radial-gradient(circle at 85% 30%, rgba(40, 90, 72, 0.12), transparent 35%);
         background-attachment: fixed;
         color: var(--color-text-primary);
         @apply font-sans antialiased;
-        /* Prevent scroll on desktop, allow on mobile */
         @apply lg:overflow-hidden;
-        /* Anti-flicker & Crispness Optimizations */
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
         backface-visibility: hidden;
+    }
+
+    .rounded-full {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-mask-image: -webkit-radial-gradient(white, black);
+        mask-image: radial-gradient(white, black);
+        isolation: isolate;
     }
 
     ::selection {
