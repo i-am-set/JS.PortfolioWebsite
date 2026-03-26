@@ -1,12 +1,13 @@
-{
-  "id": "multithreaded-world-gen",
-  "title": "Multithreaded World Generation System",
-  "description": "Designed and implemented an asynchronous world generation system in C# and Python, applying for scalability. Debugged stability issues across parallel processes, performing root cause analysis to ensure reliable execution. Wrote validation tests to verify system behavior and maintain quality across iterative development.",
-  "technologies": [ "C#", "Python", "Multithreading" ],
-  "imageUrl": "./assets/images/project-rime.jpg",
-  "repoUrl": "https://github.com/i-am-set/G.Project-Rime",
-  "liveUrl": "",
-  "hasWebEmbed": false,
-  "embedPath": ""
-}
+[
+  {
+    "id": "multithreaded-world-gen",
+    "title": "Multithreaded World Generation System",
+    "description": "Designed and implemented an asynchronous world generation system in C# and Python, applying for scalability. Debugged stability issues across parallel processes, performing root cause analysis to ensure reliable execution. Wrote validation tests to verify system behavior and maintain quality across iterative development.",
+    "technologies": [ "C#", "Python", "Multithreading" ],
+    "imageUrl": "./assets/images/project-rime.jpg",
+    "repoUrl": "https://github.com/i-am-set/G.Project-Rime",
+    "liveUrl": "",
+    "hasWebEmbed": false,
+    "embedPath": ""
+  }
 ]
