@@ -1,11 +1,10 @@
-// Cache busters added to imports to prevent browser from using old files
-import { initProjects } from './projects.js?v=9';
-import { initSkills } from './skills.js?v=9';
-import { initExperience } from './experience.js?v=9';
-import initAnalytics from './analytics.js?v=9';
-import { initConsent } from './consent.js?v=9';
+import { initProjects } from './projects.js?v=10';
+import { initSkills } from './skills.js?v=10';
+import { initExperience } from './experience.js?v=10';
+import initAnalytics from './analytics.js?v=10';
+import { initConsent } from './consent.js?v=10';
 
-console.log('[App] Initializing Bento Dashboard v9...');
+console.log('[App] Initializing Bento Dashboard v10...');
 
 async function initApp() {
     await initMeta();
