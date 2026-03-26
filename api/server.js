@@ -1,8 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
-const compression = require('compression');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,7 +14,6 @@ const allowedOrigins = [
     'http://sethgran.my.id'
 ];
 
-app.use(compression());
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -28,31 +26,25 @@ app.use(cors({
 
 app.use(express.json());
 
-let viewsCache = null;
-
-async function getViews() {
-    if (viewsCache !== null) return viewsCache;
+function getViews() {
     try {
-        const data = await fs.readFile(VIEWS_FILE, 'utf8');
-        viewsCache = JSON.parse(data).count || 0;
-        return viewsCache;
+        const data = fs.readFileSync(VIEWS_FILE, 'utf8');
+        return JSON.parse(data).count || 0;
     } catch (err) {
-        viewsCache = 0;
-        await fs.writeFile(VIEWS_FILE, JSON.stringify({ count: 0 }));
+        fs.writeFileSync(VIEWS_FILE, JSON.stringify({ count: 0 }));
         return 0;
     }
 }
 
-app.get('/api/views', async (req, res) => {
-    const count = await getViews();
-    res.json({ count });
+app.get('/api/views', (req, res) => {
+    res.json({ count: getViews() });
 });
 
-app.post('/api/views/increment', async (req, res) => {
-    const currentCount = await getViews();
-    viewsCache = currentCount + 1;
-    fs.writeFile(VIEWS_FILE, JSON.stringify({ count: viewsCache })).catch(console.error);
-    res.json({ count: viewsCache });
+app.post('/api/views/increment', (req, res) => {
+    const currentCount = getViews();
+    const newCount = currentCount + 1;
+    fs.writeFileSync(VIEWS_FILE, JSON.stringify({ count: newCount }));
+    res.json({ count: newCount });
 });
 
 app.listen(PORT, () => console.log(`[API] View counter running on port ${PORT}`));

@@ -32,7 +32,7 @@ function showBanner() {
     if (!container || document.getElementById('consent-banner')) return;
 
     container.insertAdjacentHTML('beforeend', `
-        <div id="consent-banner" class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-md border-t border-secondary rounded-t-2xl p-4 md:p-6 z-50 translate-y-full transition-transform duration-500 ease-out flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] will-change-transform">
+        <div id="consent-banner" class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-md border-t border-secondary rounded-t-2xl p-4 md:p-6 z-50 translate-y-full transition-transform duration-500 ease-out flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
             <div class="text-sm text-text-muted max-w-3xl">
                 <p>This site uses cookies to ensure basic functionality and to track page views. You can choose to opt-in to analytics. <a href="#privacy" class="text-primary hover:underline">Read more</a>.</p>
             </div>
@@ -44,11 +44,7 @@ function showBanner() {
         </div>
     `);
 
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            document.getElementById('consent-banner').classList.remove('translate-y-full');
-        });
-    });
+    requestAnimationFrame(() => document.getElementById('consent-banner').classList.remove('translate-y-full'));
 
     document.getElementById('cb-accept').addEventListener('click', () => handleConsent({ necessary: true, analytics: true }));
     document.getElementById('cb-reject').addEventListener('click', () => handleConsent({ necessary: true, analytics: false }));
@@ -58,9 +54,7 @@ function showBanner() {
 function closeBanner() {
     const banner = document.getElementById('consent-banner');
     if (banner) {
-        requestAnimationFrame(() => {
-            banner.classList.add('translate-y-full');
-        });
+        banner.classList.add('translate-y-full');
         setTimeout(() => banner.remove(), 500);
     }
 }
@@ -73,8 +67,8 @@ function showModal() {
     if (document.getElementById('consent-modal')) return;
 
     container.insertAdjacentHTML('beforeend', `
-        <div id="consent-modal" class="fixed inset-0 bg-background/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 will-change-[opacity]">
-            <div class="bg-surface border border-secondary rounded-xl w-full max-w-lg shadow-2xl transform scale-95 transition-transform duration-300 will-change-transform" id="consent-modal-content">
+        <div id="consent-modal" class="fixed inset-0 bg-background/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+            <div class="bg-surface border border-secondary rounded-xl w-full max-w-lg shadow-2xl transform scale-95 transition-transform duration-300" id="consent-modal-content">
                 <div class="flex justify-between items-center p-6 border-b border-secondary">
                     <h3 class="text-xl font-display font-bold text-text-primary">Cookie Preferences</h3>
                     <button id="cm-close" class="text-text-muted hover:text-primary transition-colors cursor-pointer">
@@ -112,10 +106,8 @@ function showModal() {
     const content = document.getElementById('consent-modal-content');
 
     requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            modal.classList.remove('opacity-0');
-            content.classList.remove('scale-95');
-        });
+        modal.classList.remove('opacity-0');
+        content.classList.remove('scale-95');
     });
 
     let tempAnalytics = currentPrefs.analytics;
@@ -124,15 +116,13 @@ function showModal() {
 
     toggleBtn.addEventListener('click', () => {
         tempAnalytics = !tempAnalytics;
-        requestAnimationFrame(() => {
-            if (tempAnalytics) {
-                toggleBtn.classList.replace('bg-secondary', 'bg-primary');
-                toggleDot.classList.replace('translate-x-1', 'translate-x-6');
-            } else {
-                toggleBtn.classList.replace('bg-primary', 'bg-secondary');
-                toggleDot.classList.replace('translate-x-6', 'translate-x-1');
-            }
-        });
+        if (tempAnalytics) {
+            toggleBtn.classList.replace('bg-secondary', 'bg-primary');
+            toggleDot.classList.replace('translate-x-1', 'translate-x-6');
+        } else {
+            toggleBtn.classList.replace('bg-primary', 'bg-secondary');
+            toggleDot.classList.replace('translate-x-6', 'translate-x-1');
+        }
     });
 
     document.getElementById('cm-save').addEventListener('click', () => {
@@ -147,10 +137,8 @@ function closeModal() {
     const modal = document.getElementById('consent-modal');
     const content = document.getElementById('consent-modal-content');
     if (modal) {
-        requestAnimationFrame(() => {
-            modal.classList.add('opacity-0');
-            content.classList.add('scale-95');
-        });
+        modal.classList.add('opacity-0');
+        content.classList.add('scale-95');
         setTimeout(() => modal.remove(), 300);
     }
 }

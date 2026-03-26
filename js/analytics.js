@@ -1,4 +1,6 @@
 let hasInitialized = false;
+
+// live domain
 const API_BASE = 'https://sethgran.my.id';
 
 export default function init() {
@@ -11,7 +13,7 @@ function handleConsentUpdate(event) {
     if (prefs && prefs.analytics) {
         if (!hasInitialized) {
             hasInitialized = true;
-            setTimeout(incrementView, 1500);
+            incrementView();
         } else {
             fetchViewCount();
         }
@@ -24,8 +26,7 @@ async function incrementView() {
     try {
         const response = await fetch(`${API_BASE}/api/views/increment`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            keepalive: true
+            headers: { 'Content-Type': 'application/json' }
         });
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -56,8 +57,6 @@ async function fetchViewCount() {
 function updateViewDisplay(value) {
     const displayElement = document.getElementById('view-count');
     if (displayElement) {
-        requestAnimationFrame(() => {
-            displayElement.textContent = `Views: ${typeof value === 'number' ? value.toLocaleString() : value}`;
-        });
+        displayElement.textContent = `Views: ${typeof value === 'number' ? value.toLocaleString() : value}`;
     }
 }

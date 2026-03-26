@@ -15,13 +15,11 @@ export async function initExperience() {
 
         if (experienceData.length > 0) {
             const latest = experienceData[0];
-            requestAnimationFrame(() => {
-                summaryContainer.innerHTML = `
-                    <p class="text-text-primary font-medium text-base leading-tight mb-1">${latest.role}</p>
-                    <p class="text-accent text-sm">${latest.company.split('|')[0].trim()}</p>
-                    <p class="text-text-muted text-xs mt-2 font-mono">${latest.period}</p>
-                `;
-            });
+            summaryContainer.innerHTML = `
+                <p class="text-text-primary font-medium text-base leading-tight mb-1">${latest.role}</p>
+                <p class="text-accent text-sm">${latest.company.split('|')[0].trim()}</p>
+                <p class="text-text-muted text-xs mt-2 font-mono">${latest.period}</p>
+            `;
         }
 
         widget.addEventListener('click', () => {
@@ -35,9 +33,7 @@ export async function initExperience() {
 
     } catch (error) {
         console.error('Failed to load experience:', error);
-        requestAnimationFrame(() => {
-            summaryContainer.innerHTML = `<span class="text-red-400 text-sm">Error loading data</span>`;
-        });
+        summaryContainer.innerHTML = `<span class="text-red-400 text-sm">Error loading data</span>`;
     }
 }
 
@@ -46,7 +42,7 @@ function generateExperienceHtml(experienceData) {
         <div class="space-y-10 border-l-2 border-secondary/30 ml-3 md:ml-4">
             ${experienceData.map(job => `
                 <div class="relative pl-6 md:pl-8">
-                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-surface border-2 border-primary z-10 gpu-accel"></div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-surface border-2 border-primary z-10"></div>
                     
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-1">
                         <h3 class="text-xl font-display font-bold text-text-primary">${job.role}</h3>
