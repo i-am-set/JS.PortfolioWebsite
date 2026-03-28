@@ -34,7 +34,7 @@
   },
   {
     "id": "personal-portfolio",
-    "title": "Data-Driven Portfolio",
+    "title": "This Website",
     "description": "A high-performance, data-driven portfolio built without frontend frameworks. Features a custom vanilla JS component system, Tailwind CSS, and a Node.js analytics microservice. Self-hosted on a dedicated Linux server and tunneled through Cloudflare.",
     "technologies":[ "Vanilla JS", "Tailwind CSS", "Node.js", "Linux", "Cloudflare" ],
     "imageUrl": "./assets/images/project-website.jpg",
