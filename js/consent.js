@@ -60,51 +60,6 @@ function closeBanner() {
     }
 }
 
-function showPrivacyPolicyModal() {
-    const container = document.getElementById('consent-container');
-    if (document.getElementById('privacy-policy-modal')) return;
-
-    container.insertAdjacentHTML('beforeend', `
-        <div id="privacy-policy-modal" class="fixed inset-0 bg-background/80 backdrop-blur-sm z-[70] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-            <div class="bg-surface border border-secondary rounded-xl w-full max-w-lg shadow-2xl transform scale-95 transition-transform duration-300" id="privacy-policy-content">
-                <div class="flex justify-between items-center p-6 border-b border-secondary">
-                    <h3 class="text-xl font-display font-bold text-text-primary">Privacy Policy</h3>
-                    <button id="ppm-close" class="text-text-muted hover:text-primary transition-colors cursor-pointer">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
-                <div class="p-6 space-y-4 text-sm text-text-muted leading-relaxed">
-                    <p>Hi, I'm a solo developer. I respect your privacy and aim to keep things as simple and transparent as possible.</p>
-                    <p>This website uses cookies solely for two purposes:</p>
-                    <ul class="list-disc pl-5 space-y-2">
-                        <li><strong class="text-text-primary">Basic Functionality:</strong> To remember your consent preferences so you aren't asked every time you visit.</li>
-                        <li><strong class="text-text-primary">Analytics:</strong> To track page views using a custom, self-hosted API. No third-party trackers (like Google Analytics) are used, and no personally identifiable information is collected or sold.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    `);
-
-    const modal = document.getElementById('privacy-policy-modal');
-    const content = document.getElementById('privacy-policy-content');
-
-    requestAnimationFrame(() => {
-        modal.classList.remove('opacity-0');
-        content.classList.remove('scale-95');
-    });
-
-    function closePPM() {
-        modal.classList.add('opacity-0');
-        content.classList.add('scale-95');
-        setTimeout(() => modal.remove(), 300);
-    }
-
-    document.getElementById('ppm-close').addEventListener('click', closePPM);
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closePPM();
-    });
-}
-
 function showModal() {
     const saved = getConsentCookie();
     if (saved) currentPrefs = saved;
@@ -122,6 +77,9 @@ function showModal() {
                     </button>
                 </div>
                 <div class="p-6 space-y-6">
+                    <div class="text-xs text-text-muted pb-4 border-b border-secondary/30">
+                        Want to know exactly how your data is used? <button id="cm-read-more" class="text-primary hover:underline cursor-pointer">Read more</button>.
+                    </div>
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h4 class="text-text-primary font-medium mb-1">Strictly Necessary</h4>
@@ -141,9 +99,8 @@ function showModal() {
                         </button>
                     </div>
                 </div>
-                <div class="p-6 border-t border-secondary flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <button id="cm-read-more" class="text-primary hover:underline text-xs cursor-pointer order-2 sm:order-1">Read full privacy policy</button>
-                    <button id="cm-save" class="btn-primary w-full sm:w-auto order-1 sm:order-2">Save Preferences</button>
+                <div class="p-6 border-t border-secondary flex justify-end">
+                    <button id="cm-save" class="btn-primary w-full sm:w-auto">Save Preferences</button>
                 </div>
             </div>
         </div>
@@ -184,6 +141,57 @@ function showModal() {
 function closeModal() {
     const modal = document.getElementById('consent-modal');
     const content = document.getElementById('consent-modal-content');
+    if (modal) {
+        modal.classList.add('opacity-0');
+        content.classList.add('scale-95');
+        setTimeout(() => modal.remove(), 300);
+    }
+}
+
+function showPrivacyPolicyModal() {
+    const container = document.getElementById('consent-container');
+    if (document.getElementById('privacy-modal')) return;
+
+    container.insertAdjacentHTML('beforeend', `
+        <div id="privacy-modal" class="fixed inset-0 bg-background/80 backdrop-blur-sm z-[70] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+            <div class="bg-surface border border-secondary rounded-xl w-full max-w-lg shadow-2xl transform scale-95 transition-transform duration-300" id="privacy-modal-content">
+                <div class="flex justify-between items-center p-6 border-b border-secondary">
+                    <h3 class="text-xl font-display font-bold text-text-primary">Privacy Policy</h3>
+                    <button id="pm-close" class="text-text-muted hover:text-primary transition-colors cursor-pointer">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="p-6 space-y-4 text-sm text-text-muted leading-relaxed">
+                    <p>Hi, I'm a solo developer hosting this portfolio. I value your privacy and aim to be completely transparent about how this site works.</p>
+                    <p>This website uses cookies for two specific reasons:</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong class="text-text-primary">Basic Functionality:</strong> To remember your consent preferences so you aren't asked every time you visit.</li>
+                        <li><strong class="text-text-primary">Analytics (Optional):</strong> To track page views. This is done via a custom, self-hosted API. No third-party trackers (like Google Analytics) are used, and no personally identifiable information is collected or sold.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `);
+
+    const modal = document.getElementById('privacy-modal');
+    const content = document.getElementById('privacy-modal-content');
+
+    requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        content.classList.remove('scale-95');
+    });
+
+    document.getElementById('pm-close').addEventListener('click', closePrivacyModal);
+    
+    // Close on background click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closePrivacyModal();
+    });
+}
+
+function closePrivacyModal() {
+    const modal = document.getElementById('privacy-modal');
+    const content = document.getElementById('privacy-modal-content');
     if (modal) {
         modal.classList.add('opacity-0');
         content.classList.add('scale-95');
