@@ -1,16 +1,16 @@
 [
-{
-  "role": "Software Developer Intern",
-  "company": "Landis+Gyr | Alpharetta, GA",
-  "period": "May 2025 - Aug 2025",
-  "description": "",
-  "highlights": [
-    "Resolved 150+ code quality and security vulnerabilities identified via SonarQube, applying secure coding practices to improve system reliability.",
-    "Led modernization of legacy DAL Generator, migrating from Oracle to PostgreSQL and eliminating ~$2.13M/year in licensing costs.",
-    "Debugged database and application-level issues across legacy systems, performing root cause analysis and implementing fixes that reduced resolution time.",
-    "Collaborated with engineering, QA, and product teams to break down technical requirements and deliver scalable, well-tested solutions.",
-    "Participated in full Agile/Scrum cycle; sprint planning, standups, retrospectives; using Azure DevOps to manage tasks, track issues, and communicate status to stakeholders.",
-    "Designed and consumed RESTful APIs to support cross-service integrations, applying HTTP best practices and JSON data contracts."
-  ]
-}
+  {
+    "role": "Software Developer Intern",
+    "company": "Landis+Gyr | Alpharetta, GA",
+    "period": "May 2025 - Aug 2025",
+    "description": "",
+    "highlights": [
+      "Resolved 150+ code quality and security vulnerabilities identified via SonarQube, applying secure coding practices to improve system reliability.",
+      "Led modernization of legacy DAL Generator, migrating from Oracle to PostgreSQL and delivering multi-million-dollar annual licensing cost savings.",
+      "Debugged database and application-level issues across legacy systems, performing root cause analysis and implementing fixes that reduced resolution time.",
+      "Collaborated with engineering, QA, and product teams to break down technical requirements and deliver scalable, well-tested solutions.",
+      "Participated in full Agile/Scrum cycle; sprint planning, standups, retrospectives; using Azure DevOps to manage tasks, track issues, and communicate status to stakeholders.",
+      "Designed and consumed RESTful APIs to support cross-service integrations, applying HTTP best practices and JSON data contracts."
+    ]
+  }
 ]
