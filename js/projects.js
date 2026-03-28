@@ -6,7 +6,7 @@ export async function initProjects() {
     }
 
     try {
-        const response = await fetch('./data/projects.json');
+        const response = await fetch(`./data/projects.json?t=${Date.now()}`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const projects = await response.json();

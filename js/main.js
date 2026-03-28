@@ -1,10 +1,12 @@
-import { initProjects } from './projects.js?v=10';
-import { initSkills } from './skills.js?v=10';
-import { initExperience } from './experience.js?v=10';
-import initAnalytics from './analytics.js?v=10';
-import { initConsent } from './consent.js?v=10';
+import { initProjects } from './projects.js?v=11';
+import { initSkills } from './skills.js?v=11';
+import { initExperience } from './experience.js?v=11';
+import initAnalytics from './analytics.js?v=11';
+import { initConsent } from './consent.js?v=11';
 
-console.log('[App] Initializing Bento Dashboard v10...');
+console.log('[App] Initializing Bento Dashboard v11...');
+
+const CACHE_BUSTER = Date.now();
 
 async function initApp() {
     await initMeta();
@@ -17,6 +19,11 @@ async function initApp() {
 
     setupClock();
     setupModalSystem();
+    
+    const resumeLink = document.getElementById('resume-link');
+    if (resumeLink) {
+        resumeLink.href = `./assets/resume.pdf?t=${CACHE_BUSTER}`;
+    }
 }
 
 if (document.readyState === 'loading') {
@@ -27,7 +34,7 @@ if (document.readyState === 'loading') {
 
 async function initMeta() {
     try {
-        const response = await fetch('./data/meta.json');
+        const response = await fetch(`./data/meta.json?t=${CACHE_BUSTER}`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const meta = await response.json();
@@ -48,7 +55,6 @@ async function initMeta() {
         if (heroTagline) heroTagline.textContent = meta.tagline;
 
         if (aboutBio && meta.bio) {
-            // Handle both actual newlines and escaped \n strings just in case
             const formattedBio = meta.bio.replace(/\\n/g, '\n');
             const paragraphs = formattedBio.split('\n').filter(p => p.trim() !== '');
             aboutBio.innerHTML = paragraphs.map(p => `<p class="indent-6 mb-3 last:mb-0">${p.trim()}</p>`).join('');
@@ -76,14 +82,12 @@ async function initMeta() {
 
             if (heroGithubLink && meta.links.github) {
                 heroGithubLink.href = meta.links.github;
-                // Extract username from URL for cleaner display
                 const ghUsername = meta.links.github.replace(/\/$/, '').split('/').pop();
                 heroGithubLink.textContent = ghUsername || 'GitHub';
             }
 
             if (heroLinkedinLink && meta.links.linkedin) {
                 heroLinkedinLink.href = meta.links.linkedin;
-                // Extract username from URL for cleaner display
                 const liUsername = meta.links.linkedin.replace(/\/$/, '').split('/').pop();
                 heroLinkedinLink.textContent = liUsername || 'LinkedIn';
             }
@@ -104,21 +108,17 @@ function setupClock() {
         return;
     }
 
-    // Cache values to prevent DOM thrashing
     let lastMyTime, lastMyDate, lastLocalTime, lastLocalDate;
 
     function updateTime() {
         const now = new Date();
 
-        // My Time (EST/EDT - America/New_York)
         const newMyTime = now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true });
         const newMyDate = now.toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric' });
 
-        // Your Time (Local)
         const newLocalTime = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
         const newLocalDate = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
-        // Only update DOM if the string has actually changed
         if (newMyTime !== lastMyTime) {
             myTimeEl.textContent = newMyTime;
             lastMyTime = newMyTime;

@@ -8,7 +8,7 @@ export async function initExperience() {
     }
 
     try {
-        const response = await fetch('./data/experience.json');
+        const response = await fetch(`./data/experience.json?t=${Date.now()}`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const experienceData = await response.json();

@@ -1,6 +1,5 @@
 let hasInitialized = false;
 
-// live domain
 const API_BASE = 'https://sethgran.my.id';
 
 export default function init() {

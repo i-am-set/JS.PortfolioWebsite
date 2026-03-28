@@ -1,7 +1,4 @@
-// Removed heavy pdf.js import. We are faking the viewer for massive performance gains.
-
-const PDF_URL = './assets/resume.pdf';
-// Fallback image if the user hasn't generated a thumbnail yet
+const PDF_URL = `./assets/resume.pdf?t=${Date.now()}`;
 const FALLBACK_IMG = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxMTI1MjIiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4QUI0QTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPlJlc3VtZSBQcmV2aWV3PC90ZXh0Pjwvc3ZnPg==';
 
 export default async function initPdfViewer() {
@@ -12,12 +9,10 @@ export default async function initPdfViewer() {
 
     if (!container) return;
 
-    // Hide the pagination controls since we are using a static preview
     if (prevBtn) prevBtn.style.display = 'none';
     if (nextBtn) nextBtn.style.display = 'none';
     if (pageIndicator) pageIndicator.style.display = 'none';
 
-    // Replace the canvas with a lightweight static preview and a direct link
     container.innerHTML = `
         <div class="relative w-full h-full min-h-[300px] flex flex-col items-center justify-center bg-surface rounded-xl overflow-hidden border border-secondary/30 group">
             <img src="./assets/images/resume-preview.jpg" alt="Resume Preview" class="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-300" onerror="this.src='${FALLBACK_IMG}'">
