@@ -183,16 +183,19 @@
                 </div>
             </div>
 
-            <!-- 2. About (Spans 1x1) -->
-            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden min-h-0 transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] lg:col-span-1 lg:row-span-1">
-                <h3 class="text-lg font-display font-bold text-text-primary mb-4 flex items-center gap-2 shrink-0">
-                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"> </path> </svg>
-                    About Me
-                </h3>
-                <div class="text-text-muted text-sm leading-relaxed overflow-y-auto no-scrollbar pr-2 flex-grow text-justify" id="about-bio">
-                    Loading bio...
+            <!-- 2. Scoundrel Daily Widget (Spans 1x1) -->
+            <a href="https://i-am-set.github.io/TS.ScoundrelDaily/" target="_blank" rel="noopener noreferrer" class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl flex flex-col relative overflow-hidden min-h-0 transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] cursor-pointer group hover:-translate-y-1 lg:col-span-1 lg:row-span-1 p-0">
+                <div class="absolute inset-0 bg-surface z-10 opacity-70 group-hover:opacity-50 transition-opacity duration-300"> </div>
+                <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out group-hover:scale-105 z-0 transform-gpu will-change-transform" style="background-image: url('./assets/images/project-scoundrel.jpg');"> </div>
+
+                <div class="relative z-20 p-6 md:p-8 h-full flex flex-col justify-center items-center text-center">
+                    <div class="flex items-center justify-center mb-4">
+                        <svg class="w-12 h-12 text-primary group-hover:text-accent transition-colors duration-300 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"> </path> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"> </path> </svg>
+                    </div>
+                    <h3 class="text-lg font-display font-bold text-text-primary drop-shadow-md"> Scoundrel Daily</h3>
+                    <p class="text-text-primary font-medium text-xs mt-1 drop-shadow-md"> Play Now &rarr;</p>
                 </div>
-            </div>
+            </a>
 
             <!-- 3. Time Widget (Spans 1x1) -->
             <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 flex flex-col relative overflow-hidden min-h-0 transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] lg:col-span-1 lg:row-span-1 justify-center items-center text-center gap-4">
@@ -208,14 +211,16 @@
                 </div>
             </div>
 
-            <!-- 4. Scoundrel Daily Widget (Spans 1x1) -->
-            <a href="https://i-am-set.github.io/TS.ScoundrelDaily/" target="_blank" rel="noopener noreferrer" class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden min-h-0 transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] cursor-pointer group hover:-translate-y-1 lg:col-span-1 lg:row-span-1 justify-center items-center text-center">
-                <div class="flex items-center justify-center mb-4">
-                    <svg class="w-12 h-12 text-primary group-hover:text-accent transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"> </path> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"> </path> </svg>
+            <!-- 4. About (Spans 1x1) -->
+            <div class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden min-h-0 transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] lg:col-span-1 lg:row-span-1">
+                <h3 class="text-lg font-display font-bold text-text-primary mb-4 flex items-center gap-2 shrink-0">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"> </path> </svg>
+                    About Me
+                </h3>
+                <div class="text-text-muted text-sm leading-relaxed overflow-y-auto no-scrollbar pr-2 flex-grow text-justify" id="about-bio">
+                    Loading bio...
                 </div>
-                <h3 class="text-lg font-display font-bold text-text-primary"> Scoundrel Daily</h3>
-                <p class="text-text-muted text-xs mt-1"> Play Now &rarr;</p>
-            </a>
+            </div>
 
             <!-- 5. Resume Widget (Spans 1x1) -->
             <a href="./assets/resume.pdf" id="resume-link" target="_blank" class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl p-6 md:p-8 flex flex-col relative overflow-hidden min-h-0 transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] cursor-pointer group hover:-translate-y-1 lg:col-span-1 lg:row-span-1 justify-center items-center text-center">
@@ -250,7 +255,7 @@
             </div>
 
             <!-- 8. Projects Widget (Spans 2x1) -->
-            <div id="bento-projects" class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl flex flex-col relative overflow-hidden min-h-0 transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:bg-surface/80 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] cursor-pointer group hover:-translate-y-1 lg:col-span-2 lg:row-span-1 p-0">
+            <div id="bento-projects" class="bg-surface/60 backdrop-blur-md border border-secondary/30 rounded-3xl flex flex-col relative overflow-hidden min-h-0 transition-all duration-300 ease-out transform-gpu will-change-[transform,box-shadow] hover:border-primary/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] cursor-pointer group hover:-translate-y-1 lg:col-span-2 lg:row-span-1 p-0">
                 <div class="absolute inset-0 bg-surface z-10 opacity-60 group-hover:opacity-40 transition-opacity duration-300"> </div>
                 <div id="projects-bg" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out group-hover:scale-105 z-0 transform-gpu will-change-transform"> </div>
 
