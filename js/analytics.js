@@ -141,7 +141,7 @@ async function fetchViewCount() {
 function getCountryName(code) {
     if (!code || code === 'N/A' || code === 'Unknown') return code;
     const cleanCode = String(code).trim().toUpperCase();
-    return countryNames[cleanCode];
+    return countryNames[cleanCode] || code;
 }
 
 function updateViewDisplay(data) {
