@@ -1,10 +1,10 @@
-import { initProjects } from './projects.js?v=12';
-import { initSkills } from './skills.js?v=12';
-import { initExperience } from './experience.js?v=12';
-import initAnalytics from './analytics.js?v=12';
-import { initConsent } from './consent.js?v=12';
+import { initProjects } from './projects.js?v=13';
+import { initSkills } from './skills.js?v=13';
+import { initExperience } from './experience.js?v=13';
+import initAnalytics, { trackEvent } from './analytics.js?v=13';
+import { initConsent } from './consent.js?v=13';
 
-console.log('[App] Initializing Bento Dashboard v12...');
+console.log('[App] Initializing Bento Dashboard v13...');
 
 const CACHE_BUSTER = Date.now();
 
@@ -20,9 +20,15 @@ async function initApp() {
     setupClock();
     setupModalSystem();
     
+    const scoundrelLink = document.getElementById('scoundrel-link');
+    if (scoundrelLink) {
+        scoundrelLink.addEventListener('click', () => trackEvent('scoundrel'));
+    }
+
     const resumeLink = document.getElementById('resume-link');
     if (resumeLink) {
         resumeLink.href = `./assets/resume.pdf?t=${CACHE_BUSTER}`;
+        resumeLink.addEventListener('click', () => trackEvent('resume'));
     }
 }
 

@@ -1,57 +1,118 @@
 let hasInitialized = false;
+let analyticsEnabled = false;
 
 const API_BASE = 'https://sethgran.my.id';
 
 export default function init() {
     document.addEventListener('consentUpdated', handleConsentUpdate);
+    setupDropdownLogic();
+}
+
+function setupDropdownLogic() {
+    const container = document.getElementById('view-stats-container');
+    const details = document.getElementById('view-details');
+    
+    if (!container || !details) return;
+
+    container.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isExpanded = details.classList.contains('opacity-100');
+        if (isExpanded) {
+            closeDropdown(details);
+        } else {
+            openDropdown(details);
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!container.contains(e.target)) {
+            closeDropdown(details);
+        }
+    });
+
+    container.addEventListener('mouseenter', () => {
+        if (window.innerWidth >= 768) openDropdown(details);
+    });
+
+    container.addEventListener('mouseleave', () => {
+        if (window.innerWidth >= 768) closeDropdown(details);
+    });
+}
+
+function openDropdown(el) {
+    el.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+    el.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+}
+
+function closeDropdown(el) {
+    el.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+    el.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
 }
 
 function handleConsentUpdate(event) {
     const prefs = event.detail;
 
     if (prefs && prefs.analytics) {
+        analyticsEnabled = true;
         if (!hasInitialized) {
             hasInitialized = true;
-            processView();
+            trackEvent('page');
         } else {
             fetchViewCount();
         }
     } else {
+        analyticsEnabled = false;
         updateViewDisplay('DISABLED');
     }
 }
 
-async function processView() {
+export async function trackEvent(type = 'page') {
+    if (!analyticsEnabled) return;
+
     const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-    const cookieName = `portfolio_daily_${today}`;
-    const hasViewedToday = document.cookie.includes(`${cookieName}=true`);
+    const dailyCookie = `portfolio_daily_${type}_${today}`;
+    const allTimeCookie = `portfolio_visited_${type}`;
 
-    let isUnique = false;
+    const hasDaily = document.cookie.includes(`${dailyCookie}=true`);
+    const hasAllTime = document.cookie.includes(`${allTimeCookie}=true`);
 
-    if (!hasViewedToday) {
-        isUnique = true;
+    let isNewVisitor = false;
+    let isDailyUnique = false;
+
+    if (!hasAllTime) {
+        isNewVisitor = true;
+        isDailyUnique = true;
         
+        const tenYears = new Date();
+        tenYears.setFullYear(tenYears.getFullYear() + 10);
+        document.cookie = `${allTimeCookie}=true; expires=${tenYears.toUTCString()}; path=/; SameSite=Strict`;
+    } else if (!hasDaily) {
+        isDailyUnique = true;
+    }
+
+    if (!hasDaily) {
         const now = new Date();
         const tomorrow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
         tomorrow.setHours(24, 0, 0, 0);
-        
-        document.cookie = `${cookieName}=true; expires=${tomorrow.toUTCString()}; path=/; SameSite=Strict`;
+        document.cookie = `${dailyCookie}=true; expires=${tomorrow.toUTCString()}; path=/; SameSite=Strict`;
     }
 
     try {
         const response = await fetch(`${API_BASE}/api/views/increment`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isUnique })
+            body: JSON.stringify({ type, isNewVisitor, isDailyUnique })
         });
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        updateViewDisplay(data.count);
-
+        
+        if (type === 'page') {
+            updateViewDisplay(data);
+        }
     } catch (error) {
-        console.error('[Analytics] API Error:', error);
-        updateViewDisplay('API Error');
+        console.error(`[Analytics] API Error for ${type}:`, error);
+        if (type === 'page') updateViewDisplay('API Error');
     }
 }
 
@@ -61,8 +122,8 @@ async function fetchViewCount() {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const data = await response.json();
-        if (data && typeof data.count === 'number') {
-            updateViewDisplay(data.count);
+        if (data && typeof data.allTimeUnique === 'number') {
+            updateViewDisplay(data);
         }
     } catch (error) {
         console.error('[Analytics] API Error:', error);
@@ -70,17 +131,35 @@ async function fetchViewCount() {
     }
 }
 
-function updateViewDisplay(value) {
+function updateViewDisplay(data) {
     const displayElement = document.getElementById('view-count');
-    if (displayElement) {
-        if (value === 'DISABLED') {
-            displayElement.textContent = 'Views: DISABLED';
-            displayElement.classList.add('text-red-400', 'border-red-400/30', 'bg-red-400/10');
-            displayElement.classList.remove('border-secondary/30', 'bg-surface/50');
-        } else {
-            displayElement.textContent = `Views: ${typeof value === 'number' ? value.toLocaleString() : value}`;
-            displayElement.classList.remove('text-red-400', 'border-red-400/30', 'bg-red-400/10');
-            displayElement.classList.add('border-secondary/30', 'bg-surface/50');
+    const detailsElement = document.getElementById('view-details');
+    
+    if (!displayElement) return;
+
+    if (data === 'DISABLED' || data === 'API Error') {
+        displayElement.textContent = `Views: ${data}`;
+        displayElement.classList.add('text-red-400', 'border-red-400/30', 'bg-red-400/10');
+        displayElement.classList.remove('border-secondary/30', 'bg-surface/50');
+        if (detailsElement) {
+            detailsElement.innerHTML = `<div class="text-xs text-red-400 text-center">${data === 'DISABLED' ? 'Analytics Disabled' : 'Failed to load data'}</div>`;
+        }
+    } else {
+        const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+        const dailyStats = data.daily[today] || { unique: 0, raw: 0 };
+        
+        displayElement.textContent = `Views: ${data.allTimeUnique.toLocaleString()}`;
+        displayElement.classList.remove('text-red-400', 'border-red-400/30', 'bg-red-400/10');
+        displayElement.classList.add('border-secondary/30', 'bg-surface/50');
+
+        if (detailsElement) {
+            detailsElement.innerHTML = `
+                <div class="text-xs font-bold text-text-primary border-b border-secondary/30 pb-2 mb-1">Page Traffic</div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">All-Time Unique:</span> <span class="text-accent font-medium">${data.allTimeUnique.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Returning Visitors:</span> <span class="text-accent font-medium">${data.returning.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Daily Unique:</span> <span class="text-accent font-medium">${dailyStats.unique.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs pt-2 border-t border-secondary/30 mt-1"><span class="text-text-muted">Total Page Loads:</span> <span class="text-primary font-medium">${data.totalRaw.toLocaleString()}</span></div>
+            `;
         }
     }
 }
