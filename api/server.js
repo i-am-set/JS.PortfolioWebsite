@@ -91,25 +91,25 @@ function getViewsData() {
 
                     if (missingCountries > 50) { // Only run if there's a significant gap
                         const distribution =[
-                            { code: 'US', weight: 0.70 },
+                            { code: 'US', weight: 0.71 },
                             // Tech Hubs (25%)
                             { code: 'IN', weight: 0.06 },
-                            { code: 'GB', weight: 0.04 },
+                            { code: 'GB', weight: 0.005 },
                             { code: 'CA', weight: 0.04 },
                             { code: 'DE', weight: 0.03 },
-                            { code: 'FR', weight: 0.02 },
-                            { code: 'NL', weight: 0.02 },
-                            { code: 'JP', weight: 0.02 },
-                            { code: 'KR', weight: 0.01 },
-                            { code: 'AU', weight: 0.01 },
+                            { code: 'FR', weight: 0.005 },
+                            { code: 'NL', weight: 0.014 },
+                            { code: 'JP', weight: 0.04 },
+                            { code: 'KR', weight: 0.026 },
+                            { code: 'AU', weight: 0.016 },
                             // Global Reach (5%)
-                            { code: 'BR', weight: 0.01 },
-                            { code: 'RU', weight: 0.005 },
-                            { code: 'CN', weight: 0.005 },
-                            { code: 'VN', weight: 0.005 },
-                            { code: 'ID', weight: 0.005 },
-                            { code: 'TH', weight: 0.005 },
-                            { code: 'AR', weight: 0.005 },
+                            { code: 'BR', weight: 0.024 },
+                            { code: 'RU', weight: 0.004 },
+                            { code: 'CN', weight: 0.006 },
+                            { code: 'VN', weight: 0.003 },
+                            { code: 'ID', weight: 0.007 },
+                            { code: 'TH', weight: 0.0065 },
+                            { code: 'AR', weight: 0.0035 },
                             { code: 'NG', weight: 0.005 },
                             { code: 'ZA', weight: 0.005 }
                         ];
