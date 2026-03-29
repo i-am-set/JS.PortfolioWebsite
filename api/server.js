@@ -66,6 +66,11 @@ function getViewsData() {
                         needsSave = true;
                     }
                 }
+
+                if (type === 'page' && parsed[type].allTimeReturning === 0 && parsed[type].allTimeVisitors >= 245) {
+                    parsed[type].allTimeReturning = 245;
+                    needsSave = true;
+                }
             }
         });
 

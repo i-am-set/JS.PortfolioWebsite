@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Anti-Caching Meta Tags -->
+    <!-- Anti-caching meta tags -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -65,14 +65,12 @@
         }
 
         @layer utilities {
-            /* Subtle Scrollbar for Widgets */
             .subtle-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
             .subtle-scrollbar::-webkit-scrollbar-track { background: transparent; }
             .subtle-scrollbar::-webkit-scrollbar-thumb { background: var(--color-secondary); border-radius: 4px; }
             .subtle-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
             .subtle-scrollbar { scrollbar-width: thin; scrollbar-color: var(--color-secondary) transparent; }
 
-            /* Completely Hidden Scrollbar */
             .no-scrollbar::-webkit-scrollbar { display: none; }
             .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         }
@@ -307,6 +305,6 @@
     <div id="consent-container"> </div>
     
     <!-- Cache Buster applied here -->
-    <script type="module" src="./js/main.js?v=14" defer></script>
+    <script type="module" src="./js/main.js?v=15" defer></script>
 </body>
 </html>

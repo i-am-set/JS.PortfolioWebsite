@@ -161,6 +161,7 @@ function updateViewDisplay(data) {
                 <div class="flex justify-between text-xs"><span class="text-text-muted">New Today:</span> <span class="text-accent font-medium">${dailyStats.new.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Returning Today:</span> <span class="text-accent font-medium">${dailyStats.returning.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs pt-2 border-t border-secondary/30 mt-1"><span class="text-text-muted">All-Time Visitors:</span> <span class="text-primary font-medium">${data.allTimeVisitors.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">All-Time Returning:</span> <span class="text-primary font-medium">${data.allTimeReturning.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">All-Time Page Loads:</span> <span class="text-primary font-medium">${data.totalRaw.toLocaleString()}</span></div>
             `;
         }
