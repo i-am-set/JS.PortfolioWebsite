@@ -89,7 +89,7 @@ function getViewsData() {
                         // Tech Hubs (25%)
                         { code: 'IN', weight: 0.06 },
                         { code: 'GB', weight: 0.005 },
-                        { code: 'CA', weight: 0.04 },
+                        { code: 'CA', weight: 0.013 },
                         { code: 'DE', weight: 0.03 },
                         { code: 'FR', weight: 0.005 },
                         { code: 'NL', weight: 0.014 },
