@@ -42,7 +42,7 @@ function getViewsData() {
         
         categories.forEach(type => {
             if (!parsed[type]) {
-                parsed[type] = { allTimeVisitors: 0, allTimeReturning: 0, totalRaw: 0, daily: {} };
+                parsed[type] = { allTimeVisitors: 0, allTimeReturning: 0, totalRaw: 0, daily: {}, countries: {}, devices: { desktop: 0, mobile: 0 } };
                 needsSave = true;
             } else {
                 if (parsed[type].allTimeUnique !== undefined) {
@@ -66,13 +66,27 @@ function getViewsData() {
                         needsSave = true;
                     }
                 }
+
+                if (type === 'page' && parsed[type].allTimeReturning === 0 && parsed[type].allTimeVisitors >= 245) {
+                    parsed[type].allTimeReturning = 245;
+                    needsSave = true;
+                }
+
+                if (!parsed[type].countries) {
+                    parsed[type].countries = {};
+                    needsSave = true;
+                }
+                if (!parsed[type].devices) {
+                    parsed[type].devices = { desktop: 0, mobile: 0 };
+                    needsSave = true;
+                }
             }
         });
 
         if (needsSave) saveViewsData(parsed);
         return parsed;
     } catch (err) {
-        const defaultCategory = () => ({ allTimeVisitors: 0, allTimeReturning: 0, totalRaw: 0, daily: {} });
+        const defaultCategory = () => ({ allTimeVisitors: 0, allTimeReturning: 0, totalRaw: 0, daily: {}, countries: {}, devices: { desktop: 0, mobile: 0 } });
         const defaultData = { page: defaultCategory(), scoundrel: defaultCategory(), resume: defaultCategory() };
         fs.writeFileSync(VIEWS_FILE, JSON.stringify(defaultData, null, 2));
         return defaultData;
@@ -105,13 +119,24 @@ async function sendEmailReport(subject, targetDate, data) {
         const dailyRetPct = daily.visitors > 0 ? Math.round((daily.returning / daily.visitors) * 100) : 0;
         const allTimeRetPct = catData.allTimeVisitors > 0 ? Math.round((catData.allTimeReturning / catData.allTimeVisitors) * 100) : 0;
 
+        const topCountries = Object.entries(catData.countries || {})
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 3)
+            .map(([c, count]) => `${c} (${count})`)
+            .join(', ') || 'None';
+
+        const desktop = catData.devices?.desktop || 0;
+        const mobile = catData.devices?.mobile || 0;
+
         return `[ ${name} ]\n` +
                `- Visitors Today: ${daily.visitors}\n` +
                `- New Today: ${daily.new}\n` +
                `- Returning Today: ${daily.returning} (${dailyRetPct}%)\n` +
                `- Visitors All-Time: ${catData.allTimeVisitors}\n` +
                `- Returning All-Time: ${catData.allTimeReturning} (${allTimeRetPct}%)\n` +
-               `- Total All-Time (Raw): ${catData.totalRaw}\n`;
+               `- Total All-Time (Raw): ${catData.totalRaw}\n` +
+               `- Top Regions: ${topCountries}\n` +
+               `- Devices: Desktop (${desktop}) | Mobile (${mobile})\n`;
     }
 
     const text = `Good evening Seth,\n\nHere is your portfolio view report for ${targetDate}:\n\n` +
@@ -147,8 +172,13 @@ app.post('/api/views/increment', (req, res) => {
     const data = getViewsData();
     const today = getTodayString();
 
+    const country = req.headers['cf-ipcountry'] || 'Unknown';
+    const userAgent = req.headers['user-agent'] || '';
+    const isMobile = /mobile|android|iphone|ipad|ipod/i.test(userAgent);
+    const deviceType = isMobile ? 'mobile' : 'desktop';
+
     if (!data[type]) {
-        data[type] = { allTimeVisitors: 0, allTimeReturning: 0, totalRaw: 0, daily: {} };
+        data[type] = { allTimeVisitors: 0, allTimeReturning: 0, totalRaw: 0, daily: {}, countries: {}, devices: { desktop: 0, mobile: 0 } };
     }
 
     if (!data[type].daily[today]) {
@@ -160,6 +190,13 @@ app.post('/api/views/increment', (req, res) => {
 
     if (isDailyUnique) {
         data[type].daily[today].visitors += 1;
+        
+        // Track country
+        if (!data[type].countries[country]) data[type].countries[country] = 0;
+        data[type].countries[country] += 1;
+
+        // Track device
+        data[type].devices[deviceType] += 1;
         
         if (isNewVisitor) {
             data[type].allTimeVisitors += 1;
@@ -195,7 +232,6 @@ app.get('/api/views/test-email', async (req, res) => {
     const data = getViewsData();
     const today = getTodayString();
     
-    // Pass the subject and the actual date string separately so the lookup doesn't fail
     const success = await sendEmailReport(`TEST - Portfolio Daily View Report - ${today}`, today, data);
     
     if (success) {
@@ -205,7 +241,6 @@ app.get('/api/views/test-email', async (req, res) => {
     }
 });
 
-// Run at 11:59 PM every day to capture the full day's data before the date rolls over
 cron.schedule('59 23 * * *', async () => {
     const data = getViewsData();
     const today = getTodayString();

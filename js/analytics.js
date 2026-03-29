@@ -150,6 +150,18 @@ function updateViewDisplay(data) {
         const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
         const dailyStats = data.daily[today] || { visitors: 0, new: 0, returning: 0, raw: 0 };
         
+        // Calculate top country
+        let topCountry = 'N/A';
+        if (data.countries && Object.keys(data.countries).length > 0) {
+            topCountry = Object.entries(data.countries).sort((a, b) => b[1] - a[1])[0][0];
+        }
+
+        // Calculate device split
+        const desktop = data.devices?.desktop || 0;
+        const mobile = data.devices?.mobile || 0;
+        const totalDevices = desktop + mobile;
+        const mobilePct = totalDevices > 0 ? Math.round((mobile / totalDevices) * 100) : 0;
+        
         displayElement.textContent = `Views: ${data.allTimeVisitors.toLocaleString()}`;
         displayElement.classList.remove('text-red-400', 'border-red-400/30', 'bg-red-400/10');
         displayElement.classList.add('border-secondary/30', 'bg-surface/50');
@@ -160,9 +172,15 @@ function updateViewDisplay(data) {
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Visitors Today:</span> <span class="text-accent font-medium">${dailyStats.visitors.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">New Today:</span> <span class="text-accent font-medium">${dailyStats.new.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Returning Today:</span> <span class="text-accent font-medium">${dailyStats.returning.toLocaleString()}</span></div>
-                <div class="flex justify-between text-xs pt-2 border-t border-secondary/30 mt-1"><span class="text-text-muted">All-Time Visitors:</span> <span class="text-primary font-medium">${data.allTimeVisitors.toLocaleString()}</span></div>
-                <div class="flex justify-between text-xs"><span class="text-text-muted">All-Time Returning:</span> <span class="text-primary font-medium">${data.allTimeReturning.toLocaleString()}</span></div>
-                <div class="flex justify-between text-xs"><span class="text-text-muted">All-Time Page Loads:</span> <span class="text-primary font-medium">${data.totalRaw.toLocaleString()}</span></div>
+                
+                <div class="text-xs font-bold text-text-primary border-b border-secondary/30 pb-2 mt-3 mb-1">All-Time Stats</div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Total Visitors:</span> <span class="text-primary font-medium">${data.allTimeVisitors.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Total Returning:</span> <span class="text-primary font-medium">${data.allTimeReturning.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Total Page Loads:</span> <span class="text-primary font-medium">${data.totalRaw.toLocaleString()}</span></div>
+                
+                <div class="text-xs font-bold text-text-primary border-b border-secondary/30 pb-2 mt-3 mb-1">Audience Insights</div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Top Region:</span> <span class="text-accent font-medium">${topCountry}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Mobile Traffic:</span> <span class="text-accent font-medium">${mobilePct}%</span></div>
             `;
         }
     }
