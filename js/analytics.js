@@ -144,6 +144,29 @@ function getCountryName(code) {
     return countryNames[cleanCode] || code;
 }
 
+function formatRegionNameToday(name) {
+    if (name.length > 12) {
+        return `<div class="overflow-hidden w-[100px] marquee-mask ml-auto shrink-0 flex items-center">
+                    <div class="animate-marquee whitespace-nowrap text-accent font-medium">
+                        ${name} &nbsp;&nbsp;&nbsp; ${name} &nbsp;&nbsp;&nbsp; ${name} &nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>`;
+    }
+    return `<span class="text-accent font-medium text-right truncate ml-auto">${name}</span>`;
+}
+
+function formatRegionNameAllTime(name, index) {
+    const fullName = `#${index} ${name}`;
+    if (fullName.length > 16) {
+        return `<div class="overflow-hidden flex-1 marquee-mask mr-2 shrink-0 flex items-center">
+                    <div class="animate-marquee whitespace-nowrap text-text-muted">
+                        ${fullName} &nbsp;&nbsp;&nbsp; ${fullName} &nbsp;&nbsp;&nbsp; ${fullName} &nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>`;
+    }
+    return `<span class="text-text-muted truncate mr-2 flex-1">${fullName}</span>`;
+}
+
 function updateViewDisplay(data) {
     const displayElement = document.getElementById('view-count');
     const detailsElement = document.getElementById('view-details');
@@ -175,7 +198,10 @@ function updateViewDisplay(data) {
             const top5 = sortedCountries.slice(0, 5);
             
             topRegionsHtml = top5.map((item, index) => 
-                `<div class="flex justify-between text-xs"><span class="text-text-muted">#${index + 1} ${getCountryName(item[0])}</span> <span class="text-accent font-medium">${item[1].toLocaleString()}</span></div>`
+                `<div class="flex justify-between text-xs items-center h-5 w-full">
+                    ${formatRegionNameAllTime(getCountryName(item[0]), index + 1)} 
+                    <span class="text-accent font-medium shrink-0 text-right">${item[1].toLocaleString()}</span>
+                </div>`
             ).join('');
         }
         
@@ -189,7 +215,10 @@ function updateViewDisplay(data) {
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Visitors Today:</span> <span class="text-accent font-medium">${dailyStats.visitors.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">New Today:</span> <span class="text-accent font-medium">${dailyStats.new.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Returning Today:</span> <span class="text-accent font-medium">${dailyStats.returning.toLocaleString()}</span></div>
-                <div class="flex justify-between text-xs"><span class="text-text-muted">Top Region Today:</span> <span class="text-accent font-medium">${topCountryToday}</span></div>
+                <div class="flex justify-between text-xs items-center h-5">
+                    <span class="text-text-muted shrink-0">Top Region Today:</span> 
+                    ${formatRegionNameToday(topCountryToday)}
+                </div>
                 
                 <div class="text-xs font-bold text-text-primary border-b border-secondary/30 pb-2 mt-3 mb-1">All-Time Stats</div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Total Visitors:</span> <span class="text-primary font-medium">${data.allTimeVisitors.toLocaleString()}</span></div>

@@ -88,6 +88,21 @@
             100% { --theme-hue: 520deg; }
         }
 
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-33.333%); }
+        }
+
+        .animate-marquee {
+            display: inline-block;
+            animation: marquee 6s linear infinite;
+        }
+
+        .marquee-mask {
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
         :root {
             animation: hue-shift 300s linear infinite;
             --dyn-bg: hsl(calc(var(--theme-hue) + 15deg), 38%, 6%);
@@ -305,6 +320,6 @@
     <div id="consent-container"> </div>
     
     <!-- Cache Buster applied here -->
-    <script type="module" src="./js/main.js?v=20" defer></script>
+    <script type="module" src="./js/main.js?v=21" defer></script>
 </body>
 </html>
