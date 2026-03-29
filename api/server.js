@@ -37,22 +37,42 @@ function getViewsData() {
         const data = fs.readFileSync(VIEWS_FILE, 'utf8');
         let parsed = JSON.parse(data);
         
-        // Migration from old format to new granular format
-        if (parsed.totalUnique !== undefined || typeof parsed.count === 'number') {
-            const oldTotalUnique = parsed.totalUnique || parsed.count || 0;
-            const oldTotalRaw = parsed.totalRaw || oldTotalUnique;
-            const oldDaily = parsed.daily || {};
-            
-            parsed = {
-                page: { allTimeUnique: oldTotalUnique, returning: 0, totalRaw: oldTotalRaw, daily: oldDaily },
-                scoundrel: { allTimeUnique: 0, returning: 0, totalRaw: 0, daily: {} },
-                resume: { allTimeUnique: 0, returning: 0, totalRaw: 0, daily: {} }
-            };
-            saveViewsData(parsed);
-        }
+        let needsSave = false;
+        const categories =['page', 'scoundrel', 'resume'];
+        
+        categories.forEach(type => {
+            if (!parsed[type]) {
+                parsed[type] = { allTimeVisitors: 0, allTimeReturning: 0, totalRaw: 0, daily: {} };
+                needsSave = true;
+            } else {
+                if (parsed[type].allTimeUnique !== undefined) {
+                    parsed[type].allTimeVisitors = parsed[type].allTimeUnique;
+                    delete parsed[type].allTimeUnique;
+                    needsSave = true;
+                }
+                if (parsed[type].returning !== undefined && parsed[type].allTimeReturning === undefined) {
+                    parsed[type].allTimeReturning = parsed[type].returning;
+                    delete parsed[type].returning;
+                    needsSave = true;
+                }
+                
+                for (const date in parsed[type].daily) {
+                    const d = parsed[type].daily[date];
+                    if (d.unique !== undefined) {
+                        d.visitors = d.unique;
+                        d.new = d.unique;
+                        d.returning = 0;
+                        delete d.unique;
+                        needsSave = true;
+                    }
+                }
+            }
+        });
+
+        if (needsSave) saveViewsData(parsed);
         return parsed;
     } catch (err) {
-        const defaultCategory = () => ({ allTimeUnique: 0, returning: 0, totalRaw: 0, daily: {} });
+        const defaultCategory = () => ({ allTimeVisitors: 0, allTimeReturning: 0, totalRaw: 0, daily: {} });
         const defaultData = { page: defaultCategory(), scoundrel: defaultCategory(), resume: defaultCategory() };
         fs.writeFileSync(VIEWS_FILE, JSON.stringify(defaultData, null, 2));
         return defaultData;
@@ -63,7 +83,7 @@ function saveViewsData(data) {
     fs.writeFileSync(VIEWS_FILE, JSON.stringify(data, null, 2));
 }
 
-async function sendEmailReport(dateStr, data) {
+async function sendEmailReport(subject, targetDate, data) {
     if (!process.env.RESEND_API_KEY) {
         console.warn(`[API] Email report skipped: Missing RESEND_API_KEY env variable.`);
         return false;
@@ -80,16 +100,21 @@ async function sendEmailReport(dateStr, data) {
     });
 
     function formatCategoryStats(name, catData) {
-        const daily = catData.daily[dateStr] || { unique: 0, raw: 0 };
+        const daily = catData.daily[targetDate] || { visitors: 0, new: 0, returning: 0, raw: 0 };
+        
+        const dailyRetPct = daily.visitors > 0 ? Math.round((daily.returning / daily.visitors) * 100) : 0;
+        const allTimeRetPct = catData.allTimeVisitors > 0 ? Math.round((catData.allTimeReturning / catData.allTimeVisitors) * 100) : 0;
+
         return `[ ${name} ]\n` +
-               `- Daily Unique: ${daily.unique}\n` +
-               `- Daily Total (Raw): ${daily.raw}\n` +
-               `- All-Time Unique: ${catData.allTimeUnique}\n` +
-               `- All-Time Returning: ${catData.returning}\n` +
-               `- All-Time Total (Raw): ${catData.totalRaw}\n`;
+               `- Visitors Today: ${daily.visitors}\n` +
+               `- New Today: ${daily.new}\n` +
+               `- Returning Today: ${daily.returning} (${dailyRetPct}%)\n` +
+               `- Visitors All-Time: ${catData.allTimeVisitors}\n` +
+               `- Returning All-Time: ${catData.allTimeReturning} (${allTimeRetPct}%)\n` +
+               `- Total All-Time (Raw): ${catData.totalRaw}\n`;
     }
 
-    const text = `Good morning Seth,\n\nHere is your portfolio view report for ${dateStr}:\n\n` +
+    const text = `Good evening Seth,\n\nHere is your portfolio view report for ${targetDate}:\n\n` +
                  `${formatCategoryStats('Page Views', data.page)}\n` +
                  `${formatCategoryStats('Scoundrel Daily Clicks', data.scoundrel)}\n` +
                  `${formatCategoryStats('Resume Clicks', data.resume)}\n` +
@@ -98,7 +123,7 @@ async function sendEmailReport(dateStr, data) {
     const mailOptions = {
         from: 'Portfolio API <noreply@sethgran.my.id>',
         to: 'seth.gran@outlook.com',
-        subject: `Portfolio Daily View Report - ${dateStr}`,
+        subject: subject,
         text: text
     };
 
@@ -118,29 +143,33 @@ app.get('/api/views', (req, res) => {
 });
 
 app.post('/api/views/increment', (req, res) => {
-    const { type = 'page', isNewVisitor, isDailyUnique } = req.body;
+    const { type = 'page', isNewVisitor, isReturningVisitor, isDailyUnique } = req.body;
     const data = getViewsData();
     const today = getTodayString();
 
     if (!data[type]) {
-        data[type] = { allTimeUnique: 0, returning: 0, totalRaw: 0, daily: {} };
+        data[type] = { allTimeVisitors: 0, allTimeReturning: 0, totalRaw: 0, daily: {} };
     }
 
     if (!data[type].daily[today]) {
-        data[type].daily[today] = { unique: 0, raw: 0 };
+        data[type].daily[today] = { visitors: 0, new: 0, returning: 0, raw: 0 };
     }
 
     data[type].totalRaw += 1;
     data[type].daily[today].raw += 1;
 
-    if (isNewVisitor) {
-        data[type].allTimeUnique += 1;
-    } else if (isDailyUnique) {
-        data[type].returning += 1;
-    }
-
     if (isDailyUnique) {
-        data[type].daily[today].unique += 1;
+        data[type].daily[today].visitors += 1;
+        
+        if (isNewVisitor) {
+            data[type].allTimeVisitors += 1;
+            data[type].daily[today].new += 1;
+        }
+        
+        if (isReturningVisitor) {
+            data[type].allTimeReturning += 1;
+            data[type].daily[today].returning += 1;
+        }
     }
 
     saveViewsData(data);
@@ -166,7 +195,8 @@ app.get('/api/views/test-email', async (req, res) => {
     const data = getViewsData();
     const today = getTodayString();
     
-    const success = await sendEmailReport(`TEST - ${today}`, data);
+    // Pass the subject and the actual date string separately so the lookup doesn't fail
+    const success = await sendEmailReport(`TEST - Portfolio Daily View Report - ${today}`, today, data);
     
     if (success) {
         res.json({ success: true, message: 'Test email sent successfully! Check your inbox.' });
@@ -175,14 +205,12 @@ app.get('/api/views/test-email', async (req, res) => {
     }
 });
 
-cron.schedule('0 0 * * *', async () => {
+// Run at 11:59 PM every day to capture the full day's data before the date rolls over
+cron.schedule('59 23 * * *', async () => {
     const data = getViewsData();
-    
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const dateStr = yesterday.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const today = getTodayString();
 
-    await sendEmailReport(dateStr, data);
+    await sendEmailReport(`Portfolio Daily View Report - ${today}`, today, data);
 }, {
     scheduled: true,
     timezone: "America/New_York"

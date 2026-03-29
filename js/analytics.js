@@ -77,6 +77,7 @@ export async function trackEvent(type = 'page') {
     const hasAllTime = document.cookie.includes(`${allTimeCookie}=true`);
 
     let isNewVisitor = false;
+    let isReturningVisitor = false;
     let isDailyUnique = false;
 
     if (!hasAllTime) {
@@ -87,6 +88,7 @@ export async function trackEvent(type = 'page') {
         tenYears.setFullYear(tenYears.getFullYear() + 10);
         document.cookie = `${allTimeCookie}=true; expires=${tenYears.toUTCString()}; path=/; SameSite=Strict`;
     } else if (!hasDaily) {
+        isReturningVisitor = true;
         isDailyUnique = true;
     }
 
@@ -101,7 +103,7 @@ export async function trackEvent(type = 'page') {
         const response = await fetch(`${API_BASE}/api/views/increment`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type, isNewVisitor, isDailyUnique })
+            body: JSON.stringify({ type, isNewVisitor, isReturningVisitor, isDailyUnique })
         });
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -122,7 +124,7 @@ async function fetchViewCount() {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const data = await response.json();
-        if (data && typeof data.allTimeUnique === 'number') {
+        if (data && typeof data.allTimeVisitors === 'number') {
             updateViewDisplay(data);
         }
     } catch (error) {
@@ -146,19 +148,20 @@ function updateViewDisplay(data) {
         }
     } else {
         const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-        const dailyStats = data.daily[today] || { unique: 0, raw: 0 };
+        const dailyStats = data.daily[today] || { visitors: 0, new: 0, returning: 0, raw: 0 };
         
-        displayElement.textContent = `Views: ${data.allTimeUnique.toLocaleString()}`;
+        displayElement.textContent = `Views: ${data.allTimeVisitors.toLocaleString()}`;
         displayElement.classList.remove('text-red-400', 'border-red-400/30', 'bg-red-400/10');
         displayElement.classList.add('border-secondary/30', 'bg-surface/50');
 
         if (detailsElement) {
             detailsElement.innerHTML = `
-                <div class="text-xs font-bold text-text-primary border-b border-secondary/30 pb-2 mb-1">Page Traffic</div>
-                <div class="flex justify-between text-xs"><span class="text-text-muted">All-Time Unique:</span> <span class="text-accent font-medium">${data.allTimeUnique.toLocaleString()}</span></div>
-                <div class="flex justify-between text-xs"><span class="text-text-muted">Returning Visitors:</span> <span class="text-accent font-medium">${data.returning.toLocaleString()}</span></div>
-                <div class="flex justify-between text-xs"><span class="text-text-muted">Daily Unique:</span> <span class="text-accent font-medium">${dailyStats.unique.toLocaleString()}</span></div>
-                <div class="flex justify-between text-xs pt-2 border-t border-secondary/30 mt-1"><span class="text-text-muted">Total Page Loads:</span> <span class="text-primary font-medium">${data.totalRaw.toLocaleString()}</span></div>
+                <div class="text-xs font-bold text-text-primary border-b border-secondary/30 pb-2 mb-1">Page Traffic Today</div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Visitors Today:</span> <span class="text-accent font-medium">${dailyStats.visitors.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">New Today:</span> <span class="text-accent font-medium">${dailyStats.new.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Returning Today:</span> <span class="text-accent font-medium">${dailyStats.returning.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs pt-2 border-t border-secondary/30 mt-1"><span class="text-text-muted">All-Time Visitors:</span> <span class="text-primary font-medium">${data.allTimeVisitors.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">All-Time Page Loads:</span> <span class="text-primary font-medium">${data.totalRaw.toLocaleString()}</span></div>
             `;
         }
     }
