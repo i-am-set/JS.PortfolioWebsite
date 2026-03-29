@@ -57,22 +57,23 @@ function saveViewsData(data) {
 }
 
 async function sendEmailReport(dateStr, dailyStats, totalUnique, totalRaw) {
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-        console.warn(`[API] Email report skipped: Missing EMAIL_USER or EMAIL_PASS env variables.`);
+    if (!process.env.RESEND_API_KEY) {
+        console.warn(`[API] Email report skipped: Missing RESEND_API_KEY env variable.`);
         return false;
     }
 
     const transporter = nodemailer.createTransport({
         host: 'smtp.resend.com',
         port: 465,
+        secure: true,
         auth: {
             user: 'resend',
-            pass: 're_iYNdK6pK_AQPBtLDgvWxcMoJPVwdi86xY'
+            pass: process.env.RESEND_API_KEY
         }
     });
 
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: 'Portfolio API <noreply@sethgran.my.id>',
         to: 'seth.gran@outlook.com',
         subject: `Portfolio Daily View Report - ${dateStr}`,
         text: `Good morning Seth,\n\nHere is your portfolio view report for ${dateStr}:\n\nUnique Visitors: ${dailyStats.unique}\nTotal Page Loads (Raw): ${dailyStats.raw}\n\nAll-Time Unique Visitors: ${totalUnique}\nAll-Time Page Loads: ${totalRaw}\n\nBest,\nYour Portfolio API`
@@ -113,7 +114,6 @@ app.post('/api/views/increment', (req, res) => {
     saveViewsData(data);
     res.json({ count: data.totalUnique });
 });
-
 
 app.get('/api/views/test-email', async (req, res) => {
     const data = getViewsData();
