@@ -158,15 +158,20 @@ function formatRegionNameToday(name) {
 }
 
 function formatRegionNameAllTime(name, index) {
-    const fullName = `#${index} ${name}`;
-    if (fullName.length > 15) {
-        return `<div class="overflow-hidden flex-1 marquee-mask mr-2 shrink-0 flex items-center">
-                    <div class="animate-marquee whitespace-nowrap text-text-muted">
-                        ${fullName} &nbsp;&nbsp;&nbsp; ${fullName} &nbsp;&nbsp;&nbsp; ${fullName} &nbsp;&nbsp;&nbsp;
+    if (name.length > 12) {
+        return `<div class="flex items-center flex-1 overflow-hidden mr-2">
+                    <span class="text-text-muted shrink-0 mr-1">#${index}</span>
+                    <div class="overflow-hidden flex-1 marquee-mask flex items-center">
+                        <div class="animate-marquee whitespace-nowrap text-text-muted">
+                            ${name} &nbsp;&nbsp;&nbsp; ${name} &nbsp;&nbsp;&nbsp; ${name} &nbsp;&nbsp;&nbsp;
+                        </div>
                     </div>
                 </div>`;
     }
-    return `<span class="text-text-muted truncate mr-2 flex-1">${fullName}</span>`;
+    return `<div class="flex items-center flex-1 overflow-hidden mr-2">
+                <span class="text-text-muted shrink-0 mr-1">#${index}</span>
+                <span class="text-text-muted truncate">${name}</span>
+            </div>`;
 }
 
 function updateViewDisplay(data) {
