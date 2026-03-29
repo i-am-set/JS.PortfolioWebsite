@@ -99,8 +99,8 @@
         }
 
         .marquee-mask {
-            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
         }
 
         :root {
@@ -319,7 +319,7 @@
     <div id="toast-container" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none"> </div>
     <div id="consent-container"> </div>
     
-    <!-- Cache Buster applied here -->
-    <script type="module" src="./js/main.js?v=21" defer></script>
+    <!-- CHANGE THIS NUMBER TO UPDATE ALL JS FILES GLOBALLY -->
+    <script type="module" src="./js/main.js?v=22" defer></script>
 </body>
 </html>

@@ -1,10 +1,21 @@
-import { initProjects } from './projects.js?v=21';
-import { initSkills } from './skills.js?v=21';
-import { initExperience } from './experience.js?v=21';
-import initAnalytics, { trackEvent } from './analytics.js?v=21';
-import { initConsent } from './consent.js?v=21';
+const currentUrl = new URL(import.meta.url);
+const v = currentUrl.searchParams.get('v') || Date.now();
 
-console.log('[App] Initializing Bento Dashboard v21...');
+console.log(`[App] Initializing Bento Dashboard v${v}...`);
+
+const[
+    { initProjects },
+    { initSkills },
+    { initExperience },
+    { default: initAnalytics, trackEvent },
+    { initConsent }
+] = await Promise.all([
+    import(`./projects.js?v=${v}`),
+    import(`./skills.js?v=${v}`),
+    import(`./experience.js?v=${v}`),
+    import(`./analytics.js?v=${v}`),
+    import(`./consent.js?v=${v}`)
+]);
 
 const CACHE_BUSTER = Date.now();
 

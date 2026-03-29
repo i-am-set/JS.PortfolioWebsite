@@ -145,19 +145,19 @@ function getCountryName(code) {
 }
 
 function formatRegionNameToday(name) {
-    if (name.length > 12) {
-        return `<div class="overflow-hidden w-[100px] marquee-mask ml-auto shrink-0 flex items-center">
+    if (name.length > 11) {
+        return `<div class="overflow-hidden w-[75px] marquee-mask ml-auto shrink-0 flex items-center">
                     <div class="animate-marquee whitespace-nowrap text-accent font-medium">
                         ${name} &nbsp;&nbsp;&nbsp; ${name} &nbsp;&nbsp;&nbsp; ${name} &nbsp;&nbsp;&nbsp;
                     </div>
                 </div>`;
     }
-    return `<span class="text-accent font-medium text-right truncate ml-auto">${name}</span>`;
+    return `<span class="text-accent font-medium text-right truncate ml-auto max-w-[75px]">${name}</span>`;
 }
 
 function formatRegionNameAllTime(name, index) {
     const fullName = `#${index} ${name}`;
-    if (fullName.length > 16) {
+    if (fullName.length > 15) {
         return `<div class="overflow-hidden flex-1 marquee-mask mr-2 shrink-0 flex items-center">
                     <div class="animate-marquee whitespace-nowrap text-text-muted">
                         ${fullName} &nbsp;&nbsp;&nbsp; ${fullName} &nbsp;&nbsp;&nbsp; ${fullName} &nbsp;&nbsp;&nbsp;
