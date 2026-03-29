@@ -147,7 +147,7 @@ function getCountryName(code) {
 }
 
 function formatRegionNameToday(name) {
-    if (name.length > 14) {
+    if (name.length > 12) {
         return `<div class="overflow-hidden w-[85px] marquee-mask ml-auto shrink-0 flex items-center">
                     <div class="animate-marquee whitespace-nowrap text-accent font-medium">
                         ${name} &nbsp;&nbsp;&nbsp; ${name} &nbsp;&nbsp;&nbsp; ${name} &nbsp;&nbsp;&nbsp;
