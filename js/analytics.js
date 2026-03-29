@@ -133,6 +133,16 @@ async function fetchViewCount() {
     }
 }
 
+function getCountryName(code) {
+    if (!code || code === 'N/A' || code === 'Unknown') return code;
+    try {
+        const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+        return regionNames.of(code) || code;
+    } catch (e) {
+        return code;
+    }
+}
+
 function updateViewDisplay(data) {
     const displayElement = document.getElementById('view-count');
     const detailsElement = document.getElementById('view-details');
@@ -153,7 +163,8 @@ function updateViewDisplay(data) {
         // Calculate top country today
         let topCountryToday = 'N/A';
         if (dailyStats.countries && Object.keys(dailyStats.countries).length > 0) {
-            topCountryToday = Object.entries(dailyStats.countries).sort((a, b) => b[1] - a[1])[0][0];
+            const topCode = Object.entries(dailyStats.countries).sort((a, b) => b[1] - a[1])[0][0];
+            topCountryToday = getCountryName(topCode);
         }
 
         // Calculate top 5 regions all-time
@@ -163,7 +174,7 @@ function updateViewDisplay(data) {
             const top5 = sortedCountries.slice(0, 5);
             
             topRegionsHtml = top5.map((item, index) => 
-                `<div class="flex justify-between text-xs"><span class="text-text-muted">#${index + 1} ${item[0]}</span> <span class="text-accent font-medium">${item[1].toLocaleString()}</span></div>`
+                `<div class="flex justify-between text-xs"><span class="text-text-muted">#${index + 1} ${getCountryName(item[0])}</span> <span class="text-accent font-medium">${item[1].toLocaleString()}</span></div>`
             ).join('');
         }
         
