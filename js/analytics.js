@@ -85,13 +85,15 @@ export async function trackEvent(type = 'page') {
     let isReturningVisitor = false;
     let isDailyUnique = false;
 
+    const domainAttr = window.location.hostname.includes('sethgran.my.id') ? 'domain=.sethgran.my.id;' : '';
+
     if (!hasAllTime) {
         isNewVisitor = true;
         isDailyUnique = true;
         
         const tenYears = new Date();
         tenYears.setFullYear(tenYears.getFullYear() + 10);
-        document.cookie = `${allTimeCookie}=true; expires=${tenYears.toUTCString()}; path=/; SameSite=Strict`;
+        document.cookie = `${allTimeCookie}=true; expires=${tenYears.toUTCString()}; path=/; ${domainAttr} SameSite=Strict`;
     } else if (!hasDaily) {
         isReturningVisitor = true;
         isDailyUnique = true;
@@ -101,7 +103,7 @@ export async function trackEvent(type = 'page') {
         const now = new Date();
         const tomorrow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
         tomorrow.setHours(24, 0, 0, 0);
-        document.cookie = `${dailyCookie}=true; expires=${tomorrow.toUTCString()}; path=/; SameSite=Strict`;
+        document.cookie = `${dailyCookie}=true; expires=${tomorrow.toUTCString()}; path=/; ${domainAttr} SameSite=Strict`;
     }
 
     try {

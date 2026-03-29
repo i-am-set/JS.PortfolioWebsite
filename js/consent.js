@@ -13,7 +13,10 @@ function setConsentCookie(prefs) {
     const value = encodeURIComponent(JSON.stringify(prefs));
     const date = new Date();
     date.setTime(date.getTime() + (180 * 24 * 60 * 60 * 1000));
-    document.cookie = `${COOKIE_NAME}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Strict`;
+    
+    const domainAttr = window.location.hostname.includes('sethgran.my.id') ? 'domain=.sethgran.my.id;' : '';
+    
+    document.cookie = `${COOKIE_NAME}=${value}; expires=${date.toUTCString()}; path=/; ${domainAttr} SameSite=Strict`;
 }
 
 function fireConsentEvent(prefs) {

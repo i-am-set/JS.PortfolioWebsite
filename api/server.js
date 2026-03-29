@@ -13,7 +13,9 @@ const allowedOrigins =[
     'http://localhost',
     'http://127.0.0.1:5500',
     'https://sethgran.my.id',
-    'http://sethgran.my.id'
+    'http://sethgran.my.id',
+    'https://www.sethgran.my.id',
+    'http://www.sethgran.my.id'
 ];
 
 const countryNames = {
@@ -29,7 +31,8 @@ function getCountryName(code) {
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        // Allow exact matches or any subdomain of sethgran.my.id
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.sethgran.my.id')) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
