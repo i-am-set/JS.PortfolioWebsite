@@ -148,19 +148,24 @@ function updateViewDisplay(data) {
         }
     } else {
         const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-        const dailyStats = data.daily[today] || { visitors: 0, new: 0, returning: 0, raw: 0 };
+        const dailyStats = data.daily[today] || { visitors: 0, new: 0, returning: 0, raw: 0, countries: {} };
         
-        // Calculate top country
-        let topCountry = 'N/A';
-        if (data.countries && Object.keys(data.countries).length > 0) {
-            topCountry = Object.entries(data.countries).sort((a, b) => b[1] - a[1])[0][0];
+        // Calculate top country today
+        let topCountryToday = 'N/A';
+        if (dailyStats.countries && Object.keys(dailyStats.countries).length > 0) {
+            topCountryToday = Object.entries(dailyStats.countries).sort((a, b) => b[1] - a[1])[0][0];
         }
 
-        // Calculate device split
-        const desktop = data.devices?.desktop || 0;
-        const mobile = data.devices?.mobile || 0;
-        const totalDevices = desktop + mobile;
-        const mobilePct = totalDevices > 0 ? Math.round((mobile / totalDevices) * 100) : 0;
+        // Calculate top 5 regions all-time
+        let topRegionsHtml = '<div class="text-xs text-text-muted italic">Not enough data</div>';
+        if (data.countries && Object.keys(data.countries).length > 0) {
+            const sortedCountries = Object.entries(data.countries).sort((a, b) => b[1] - a[1]);
+            const top5 = sortedCountries.slice(0, 5);
+            
+            topRegionsHtml = top5.map((item, index) => 
+                `<div class="flex justify-between text-xs"><span class="text-text-muted">#${index + 1} ${item[0]}</span> <span class="text-accent font-medium">${item[1].toLocaleString()}</span></div>`
+            ).join('');
+        }
         
         displayElement.textContent = `Views: ${data.allTimeVisitors.toLocaleString()}`;
         displayElement.classList.remove('text-red-400', 'border-red-400/30', 'bg-red-400/10');
@@ -172,15 +177,15 @@ function updateViewDisplay(data) {
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Visitors Today:</span> <span class="text-accent font-medium">${dailyStats.visitors.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">New Today:</span> <span class="text-accent font-medium">${dailyStats.new.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Returning Today:</span> <span class="text-accent font-medium">${dailyStats.returning.toLocaleString()}</span></div>
+                <div class="flex justify-between text-xs"><span class="text-text-muted">Top Region Today:</span> <span class="text-accent font-medium">${topCountryToday}</span></div>
                 
                 <div class="text-xs font-bold text-text-primary border-b border-secondary/30 pb-2 mt-3 mb-1">All-Time Stats</div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Total Visitors:</span> <span class="text-primary font-medium">${data.allTimeVisitors.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Total Returning:</span> <span class="text-primary font-medium">${data.allTimeReturning.toLocaleString()}</span></div>
                 <div class="flex justify-between text-xs"><span class="text-text-muted">Total Page Loads:</span> <span class="text-primary font-medium">${data.totalRaw.toLocaleString()}</span></div>
                 
-                <div class="text-xs font-bold text-text-primary border-b border-secondary/30 pb-2 mt-3 mb-1">Audience Insights</div>
-                <div class="flex justify-between text-xs"><span class="text-text-muted">Top Region:</span> <span class="text-accent font-medium">${topCountry}</span></div>
-                <div class="flex justify-between text-xs"><span class="text-text-muted">Mobile Traffic:</span> <span class="text-accent font-medium">${mobilePct}%</span></div>
+                <div class="text-xs font-bold text-text-primary border-b border-secondary/30 pb-2 mt-3 mb-1">Top Regions (All-Time)</div>
+                ${topRegionsHtml}
             `;
         }
     }

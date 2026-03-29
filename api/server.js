@@ -65,6 +65,10 @@ function getViewsData() {
                         delete d.unique;
                         needsSave = true;
                     }
+                    if (!d.countries) {
+                        d.countries = {};
+                        needsSave = true;
+                    }
                 }
 
                 if (type === 'page' && parsed[type].allTimeReturning === 0 && parsed[type].allTimeVisitors >= 245) {
@@ -114,29 +118,29 @@ async function sendEmailReport(subject, targetDate, data) {
     });
 
     function formatCategoryStats(name, catData) {
-        const daily = catData.daily[targetDate] || { visitors: 0, new: 0, returning: 0, raw: 0 };
+        const daily = catData.daily[targetDate] || { visitors: 0, new: 0, returning: 0, raw: 0, countries: {} };
         
         const dailyRetPct = daily.visitors > 0 ? Math.round((daily.returning / daily.visitors) * 100) : 0;
         const allTimeRetPct = catData.allTimeVisitors > 0 ? Math.round((catData.allTimeReturning / catData.allTimeVisitors) * 100) : 0;
 
         const topCountries = Object.entries(catData.countries || {})
             .sort((a, b) => b[1] - a[1])
-            .slice(0, 3)
-            .map(([c, count]) => `${c} (${count})`)
+            .slice(0, 5)
+            .map(([c, count], i) => `#${i+1} ${c} (${count})`)
             .join(', ') || 'None';
 
-        const desktop = catData.devices?.desktop || 0;
-        const mobile = catData.devices?.mobile || 0;
+        const topDailyCountry = Object.entries(daily.countries || {})
+            .sort((a, b) => b[1] - a[1])[0]?.[0] || 'None';
 
         return `[ ${name} ]\n` +
                `- Visitors Today: ${daily.visitors}\n` +
                `- New Today: ${daily.new}\n` +
                `- Returning Today: ${daily.returning} (${dailyRetPct}%)\n` +
+               `- Top Region Today: ${topDailyCountry}\n` +
                `- Visitors All-Time: ${catData.allTimeVisitors}\n` +
                `- Returning All-Time: ${catData.allTimeReturning} (${allTimeRetPct}%)\n` +
                `- Total All-Time (Raw): ${catData.totalRaw}\n` +
-               `- Top Regions: ${topCountries}\n` +
-               `- Devices: Desktop (${desktop}) | Mobile (${mobile})\n`;
+               `- Top Regions All-Time: ${topCountries}\n`;
     }
 
     const text = `Good evening Seth,\n\nHere is your portfolio view report for ${targetDate}:\n\n` +
@@ -182,7 +186,7 @@ app.post('/api/views/increment', (req, res) => {
     }
 
     if (!data[type].daily[today]) {
-        data[type].daily[today] = { visitors: 0, new: 0, returning: 0, raw: 0 };
+        data[type].daily[today] = { visitors: 0, new: 0, returning: 0, raw: 0, countries: {} };
     }
 
     data[type].totalRaw += 1;
@@ -191,9 +195,14 @@ app.post('/api/views/increment', (req, res) => {
     if (isDailyUnique) {
         data[type].daily[today].visitors += 1;
         
-        // Track country
+        // Track country all-time
         if (!data[type].countries[country]) data[type].countries[country] = 0;
         data[type].countries[country] += 1;
+
+        // Track country daily
+        if (!data[type].daily[today].countries) data[type].daily[today].countries = {};
+        if (!data[type].daily[today].countries[country]) data[type].daily[today].countries[country] = 0;
+        data[type].daily[today].countries[country] += 1;
 
         // Track device
         data[type].devices[deviceType] += 1;
