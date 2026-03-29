@@ -63,15 +63,11 @@ async function sendEmailReport(dateStr, dailyStats, totalUnique, totalRaw) {
     }
 
     const transporter = nodemailer.createTransport({
-        host: 'smtp.office365.com',
-        port: 587,
-        secure: false,
+        host: 'smtp.resend.com',
+        port: 465,
         auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        },
-        tls: {
-            ciphers: 'SSLv3'
+            user: 'resend',
+            pass: 're_iYNdK6pK_AQPBtLDgvWxcMoJPVwdi86xY'
         }
     });
 
