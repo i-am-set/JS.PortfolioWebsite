@@ -79,51 +79,6 @@ function getViewsData() {
                     parsed[type].devices = { desktop: 0, mobile: 0 };
                     needsSave = true;
                 }
-
-                // One-time regional data wipe and redistribution
-                if (type === 'page' && !parsed[type].regionWipe20262) {
-                    parsed[type].countries = {};
-                    
-                    const distribution =[
-                        { code: 'US', weight: 0.71 },
-                        // Tech Hubs (25%)
-                        { code: 'IN', weight: 0.06 },
-                        { code: 'GB', weight: 0.005 },
-                        { code: 'CA', weight: 0.013 },
-                        { code: 'DE', weight: 0.03 },
-                        { code: 'FR', weight: 0.005 },
-                        { code: 'NL', weight: 0.014 },
-                        { code: 'JP', weight: 0.04 },
-                        { code: 'KR', weight: 0.026 },
-                        { code: 'AU', weight: 0.016 },
-                        // Global Reach (5%)
-                        { code: 'BR', weight: 0.024 },
-                        { code: 'RU', weight: 0.004 },
-                        { code: 'CN', weight: 0.006 },
-                        { code: 'VN', weight: 0.003 },
-                        { code: 'ID', weight: 0.007 },
-                        { code: 'TH', weight: 0.0065 },
-                        { code: 'AR', weight: 0.0035 },
-                        { code: 'NG', weight: 0.005 },
-                        { code: 'ZA', weight: 0.005 }
-                    ];
-
-                    let remaining = parsed[type].allTimeVisitors;
-                    distribution.forEach(target => {
-                        const count = Math.floor(parsed[type].allTimeVisitors * target.weight);
-                        if (count > 0) {
-                            parsed[type].countries[target.code] = count;
-                            remaining -= count;
-                        }
-                    });
-
-                    if (remaining > 0) {
-                        parsed[type].countries['US'] = (parsed[type].countries['US'] || 0) + remaining;
-                    }
-                    
-                    parsed[type].regionWipe20262 = true;
-                    needsSave = true;
-                }
             }
         });
 
