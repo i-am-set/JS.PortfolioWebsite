@@ -81,7 +81,7 @@ function getViewsData() {
                 }
 
                 // One-time regional data wipe and redistribution
-                if (type === 'page' && !parsed[type].regionWipe2026) {
+                if (type === 'page' && !parsed[type].regionWipe20262) {
                     parsed[type].countries = {};
                     
                     const distribution =[
@@ -121,7 +121,7 @@ function getViewsData() {
                         parsed[type].countries['US'] = (parsed[type].countries['US'] || 0) + remaining;
                     }
                     
-                    parsed[type].regionWipe2026 = true;
+                    parsed[type].regionWipe20262 = true;
                     needsSave = true;
                 }
             }
