@@ -1,10 +1,10 @@
-import { initProjects } from './projects.js?v=17';
-import { initSkills } from './skills.js?v=17';
-import { initExperience } from './experience.js?v=17';
-import initAnalytics, { trackEvent } from './analytics.js?v=17';
-import { initConsent } from './consent.js?v=17';
+import { initProjects } from './projects.js?v=18';
+import { initSkills } from './skills.js?v=18';
+import { initExperience } from './experience.js?v=18';
+import initAnalytics, { trackEvent } from './analytics.js?v=18';
+import { initConsent } from './consent.js?v=18';
 
-console.log('[App] Initializing Bento Dashboard v17...');
+console.log('[App] Initializing Bento Dashboard v18...');
 
 const CACHE_BUSTER = Date.now();
 
