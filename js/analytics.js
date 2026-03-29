@@ -12,20 +12,37 @@ function handleConsentUpdate(event) {
     if (prefs && prefs.analytics) {
         if (!hasInitialized) {
             hasInitialized = true;
-            incrementView();
+            processView();
         } else {
             fetchViewCount();
         }
     } else {
-        updateViewDisplay('0');
+        updateViewDisplay('DISABLED');
     }
 }
 
-async function incrementView() {
+async function processView() {
+    const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const cookieName = `portfolio_daily_${today}`;
+    const hasViewedToday = document.cookie.includes(`${cookieName}=true`);
+
+    let isUnique = false;
+
+    if (!hasViewedToday) {
+        isUnique = true;
+        
+        const now = new Date();
+        const tomorrow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        tomorrow.setHours(24, 0, 0, 0);
+        
+        document.cookie = `${cookieName}=true; expires=${tomorrow.toUTCString()}; path=/; SameSite=Strict`;
+    }
+
     try {
         const response = await fetch(`${API_BASE}/api/views/increment`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ isUnique })
         });
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -56,6 +73,14 @@ async function fetchViewCount() {
 function updateViewDisplay(value) {
     const displayElement = document.getElementById('view-count');
     if (displayElement) {
-        displayElement.textContent = `Views: ${typeof value === 'number' ? value.toLocaleString() : value}`;
+        if (value === 'DISABLED') {
+            displayElement.textContent = 'Views: DISABLED';
+            displayElement.classList.add('text-red-400', 'border-red-400/30', 'bg-red-400/10');
+            displayElement.classList.remove('border-secondary/30', 'bg-surface/50');
+        } else {
+            displayElement.textContent = `Views: ${typeof value === 'number' ? value.toLocaleString() : value}`;
+            displayElement.classList.remove('text-red-400', 'border-red-400/30', 'bg-red-400/10');
+            displayElement.classList.add('border-secondary/30', 'bg-surface/50');
+        }
     }
 }

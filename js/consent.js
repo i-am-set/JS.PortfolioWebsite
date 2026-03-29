@@ -92,7 +92,7 @@ function showModal() {
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h4 class="text-text-primary font-medium mb-1">Analytics</h4>
-                            <p class="text-sm text-text-muted">Allows the site to count page visits anonymously using a self-hosted API.</p>
+                            <p class="text-sm text-text-muted">Allows the site to count daily unique visitors and total page loads anonymously using a self-hosted API.</p>
                         </div>
                         <button id="cm-toggle-analytics" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary ${currentPrefs.analytics ? 'bg-primary' : 'bg-secondary'} shrink-0 cursor-pointer">
                             <span class="inline-block h-4 w-4 transform rounded-full bg-text-primary transition-transform duration-200 ${currentPrefs.analytics ? 'translate-x-6' : 'translate-x-1'}"></span>
@@ -166,7 +166,7 @@ function showPrivacyPolicyModal() {
                     <p>This website uses cookies for two specific reasons:</p>
                     <ul class="list-disc pl-5 space-y-2">
                         <li><strong class="text-text-primary">Basic Functionality:</strong> To remember your consent preferences so you aren't asked every time you visit.</li>
-                        <li><strong class="text-text-primary">Analytics (Optional):</strong> To track page views. This is done via a custom, self-hosted API. No third-party trackers (like Google Analytics) are used, and no personally identifiable information is collected or sold.</li>
+                        <li><strong class="text-text-primary">Analytics (Optional):</strong> To track page views. If you opt-in, a temporary daily cookie is set to count you as a single unique visitor for the day, rather than counting every page refresh. We track both unique daily visitors and total page loads. This is done via a custom, self-hosted API. No third-party trackers (like Google Analytics) are used, and no personally identifiable information is collected or sold.</li>
                     </ul>
                 </div>
             </div>
