@@ -89,7 +89,7 @@ function getViewsData() {
                     const currentCountrySum = Object.values(parsed[type].countries).reduce((a, b) => a + b, 0);
                     const missingCountries = parsed[type].allTimeVisitors - currentCountrySum;
 
-                    if (missingCountries > 50) { // Only run if there's a significant gap
+                    if (missingCountries > 0) { // Only run if there's a significant gap
                         const distribution =[
                             { code: 'US', weight: 0.71 },
                             // Tech Hubs (25%)
